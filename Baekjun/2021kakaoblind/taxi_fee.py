@@ -42,3 +42,45 @@ def solution(n, s, a, b, fares):
         answer = min(ston[i] + sum(ctod[i]),answer)
     
     return answer
+
+# 이게 좀 더 빠른 코드
+from queue import PriorityQueue
+import sys
+def solution(n, s, a, b, fares):
+    answer = sys.maxsize
+    dic = {}
+    for c,d,f in fares:
+        if not c in dic:
+            dic[c] = []
+        if not d in dic:
+            dic[d] = []
+        dic[c].append([f,d])
+        dic[d].append([f,c])
+        
+    ctod = [[0,0] for _ in range(n+1)]
+    ston = []
+    varr = [0 for _ in range(n+1)]
+    res = [sys.maxsize for _ in range(n+1)]
+    
+    for i in range(1,n+1):
+        tvarr = varr[:]
+        tres = res[:]
+        tres[i] = 0
+        q = PriorityQueue()
+        q.put([tres[i],i])
+        while not q.empty() and sum(tvarr) < n:
+            [minv, minind] = q.get()
+            tvarr[minind] = 1
+            if minind in dic:
+                for f,d in dic[minind]:
+                    if tres[d] > minv + f:
+                        tres[d] = minv + f
+                        q.put([tres[d],d])
+        if i == s:
+            ston = tres
+        ctod[i] = ([tres[a],tres[b]])
+        
+    for i in range(1,n+1):
+        answer = min(ston[i] + sum(ctod[i]),answer)
+    
+    return answer
