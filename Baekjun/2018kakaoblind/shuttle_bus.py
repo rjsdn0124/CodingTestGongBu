@@ -11,28 +11,25 @@ def getStrBusTime(t):
     return strtime
     
 def solution(n, t, m, timetable):
+    answer = ''
+    
     timetable.sort()
+    
     bustime = 9 * 60
     j = 0
     l = len(timetable)
-    for i in range(n-1):
+    count = 0
+    
+    for i in range(n):
         count=0
-        strtime = getStrBusTime(bustime)
-        while m > count and j < l and timetable[j] <= strtime:
+        answer = getStrBusTime(bustime)
+        while m > count and j < l and timetable[j] <= answer:
             j += 1
             count += 1
         bustime += t
         
-    lastBus = getStrBusTime(bustime)
-    lastcrew = ''
-    while m > 0 and j < l and timetable[j] <= lastBus:
-        m -= 1
-        if not lastcrew == timetable[j]:
-            lastcrew = timetable[j]
-        j += 1
+    if m == count:
+        h,mi = map(int,timetable[j - 1].split(':'))
+        answer = getStrBusTime(h * 60 + mi - 1)
         
-    answer = lastBus
-    if m == 0:
-        h,mi = map(int,lastcrew.split(':'))
-        answer = getStrBusTime(h*60 + mi - 1)
     return answer
