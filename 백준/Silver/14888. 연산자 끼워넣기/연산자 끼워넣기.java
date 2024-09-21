@@ -5,6 +5,8 @@ public class Main{
     static int N;
     static int[] NUMS;
     static int[] OPS = new int[4];
+    static int max = Integer.MIN_VALUE;
+    static int min = Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(getInput(br)[0]);
@@ -19,37 +21,29 @@ public class Main{
         for(int i = 0; i < 4; i++){
             OPS[i] = Integer.parseInt(opstrs[i]);
         }
-        int[] result = dfs(1, NUMS[0]);
-        System.out.println(result[1]);
-        System.out.println(result[0]);
+        dfs(1, NUMS[0]);
+        System.out.println(max);
+        System.out.println(min);
     }
 
     public static String[] getInput(BufferedReader br) throws IOException{
         return br.readLine().split(" ");
     }
 
-    public static int[] dfs(int depth, int prevNum){
-        int[] resArr = new int[] {Integer.MAX_VALUE, Integer.MIN_VALUE};
+    public static void dfs(int depth, int sum){
         int res = 0;
-        int[] tmparr;
+        if(depth == N){
+            min = Math.min(min, sum);
+            max = Math.max(max, sum);
+        }
         for(int i = 0; i < 4; i++){
             if(OPS[i] > 0) {
                 OPS[i]--;
-                res = calc(prevNum, NUMS[depth], i);
-                if(depth < N - 1){
-                    tmparr = dfs(depth+1, res);
-                    resArr[0] = Math.min(resArr[0], tmparr[0]);
-                    resArr[1] = Math.max(resArr[1], tmparr[1]);
-                }
-                else{
-                    resArr[0] = res;
-                    resArr[1] = res;
-                }
+                res = calc(sum, NUMS[depth], i);
+                dfs(depth+1, res);
                 OPS[i]++;
             }
         }
-        
-        return resArr;
     }
 
     // 계산기
