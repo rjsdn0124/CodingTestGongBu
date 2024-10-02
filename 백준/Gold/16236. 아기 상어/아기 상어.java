@@ -3,7 +3,6 @@ import java.util.*;
 
 public class Main{
     static int size;
-    static int fileCount;
     static int[][] arr;
     static Shark shark;
     static int result = 0;
@@ -129,14 +128,8 @@ class Shark{
         }
     }
 
-    public String toString(){
-        return "coord: " + this.coord[0] + " " + this.coord[1] + " size: " + this.size;
-    }
-
-
     private void updateCoord(int x, int y){
         this.coord[0] = x;
         this.coord[1] = y;
     }
-
 }
