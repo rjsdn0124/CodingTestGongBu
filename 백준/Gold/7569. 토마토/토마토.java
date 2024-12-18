@@ -14,25 +14,18 @@ public class Main{
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Queue<Coord> q = getInput(br);
-
-		int result = solution(q);
-
-		System.out.println(result);
+		solution(q);
 		br.close();
 	}
 
-	private static int solution(Queue<Coord> q){
+	private static void solution(Queue<Coord> q){
 		int days = -1;
 
 		while(!q.isEmpty()) {
 			days = updateTomatoes(tomatoes, q);
 		}
 
-		if(zeroCount > 0){
-			return -1;
-		}
-
-		return days;
+		System.out.println(zeroCount > 0 ? -1 : days);
 	}
 
 	private static int updateTomatoes(int[][][] tomatoes, Queue<Coord> q){
