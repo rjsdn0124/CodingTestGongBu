@@ -23,8 +23,7 @@ public class Main{
 		int days = -1;
 
 		while(!q.isEmpty()) {
-			q = goTomorrow(tomatoes, q);
-			days++;
+			days = updateTomatoes(tomatoes, q);
 		}
 
 		for(int i = 0; i < z; i++){
@@ -40,37 +39,33 @@ public class Main{
 		return days;
 	}
 
-	private static Queue<Coord> goTomorrow(int[][][] tomatoes, Queue<Coord> q){
-		Queue<Coord> newQ = new LinkedList<>();
+	private static int updateTomatoes(int[][][] tomatoes, Queue<Coord> q){
+		Coord co = q.poll();
+		int cx = co.getX();
+		int cy = co.getY();
+		int cz = co.getZ();
 
-		while(!q.isEmpty()){
-			Coord co = q.poll();
-			int cx = co.getX();
-			int cy = co.getY();
-			int cz = co.getZ();
+		for(int i = 0; i < 2; i++){
+			int nz = cz + dz[i];
+			int ny = cy + dy[i];
+			int nx = cx + dx[i];
 
-			for(int i = 0; i < 2; i++){
-				int nz = cz + dz[i];
-				int ny = cy + dy[i];
-				int nx = cx + dx[i];
+			if(0 <= nz && nz < z && tomatoes[nz][cy][cx] == 0){
+				tomatoes[nz][cy][cx] = 1;
+				q.add(new Coord(cx, cy, nz, co.getDays() + 1));
+			}
 
-				if(0 <= nz && nz < z && tomatoes[nz][cy][cx] == 0){
-					tomatoes[nz][cy][cx] = 1;
-					newQ.add(new Coord(cx, cy, nz));
-				}
+			if(0 <= ny && ny < y && tomatoes[cz][ny][cx] == 0){
+				tomatoes[cz][ny][cx] = 1;
+				q.add(new Coord(cx, ny, cz, co.getDays() + 1));
+			}
 
-				if(0 <= ny && ny < y && tomatoes[cz][ny][cx] == 0){
-					tomatoes[cz][ny][cx] = 1;
-					newQ.add(new Coord(cx, ny, cz));
-				}
-
-				if(0 <= nx && nx < x && tomatoes[cz][cy][nx] == 0){
-					tomatoes[cz][cy][nx] = 1;
-					newQ.add(new Coord(nx, cy, cz));
-				}
+			if(0 <= nx && nx < x && tomatoes[cz][cy][nx] == 0){
+				tomatoes[cz][cy][nx] = 1;
+				q.add(new Coord(nx, cy, cz, co.getDays() + 1));
 			}
 		}
-		return newQ;
+		return co.getDays();
 	}
 
 	private static Queue<Coord> getInput(BufferedReader br) throws IOException{
@@ -88,7 +83,7 @@ public class Main{
 				for(int k = 0; k < x; k++){
 					tomatoes[i][j][k] = Integer.parseInt(input[k]);
 					if(tomatoes[i][j][k] == 1){
-						que.add(new Coord(k, j, i));
+						que.add(new Coord(k, j, i, 0));
 					}
 				}
 			}
@@ -101,11 +96,13 @@ public class Main{
 		int x;
 		int y;
 		int z;
+		int days;
 
-		public Coord(int x, int y, int z) {
+		public Coord(int x, int y, int z, int days) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
+			this.days = days;
 		}
 
 		public int getX(){
@@ -116,6 +113,9 @@ public class Main{
 		}
 		public int getZ(){
 			return z;
+		}
+		public int getDays(){
+			return days;
 		}
 	}
 }
