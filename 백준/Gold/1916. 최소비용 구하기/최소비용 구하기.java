@@ -3,52 +3,51 @@ import java.util.*;
 
 public class Main{
 	private static int cityCount;
-	private static int busCount;
 	private static int startPoint;
 	private static int endPoint;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		Map<Integer, List<Node>> map = getInput(br);
+		List<Node>[] arr = getInput(br);
 
-		solution(map);
+		solution(arr);
 	}
 
-	private static void solution(Map<Integer, List<Node>> map){
+	private static void solution(List<Node>[] arr){
 		PriorityQueue<Node> pq = new PriorityQueue<>();
 		boolean[] visited = new boolean[cityCount + 1];
 
 		pq.add(new Node(startPoint, 0));
 
 		while(!visited[endPoint]){
-			search(map, pq, visited);
+			search(arr, pq, visited);
 		}
 	}
 
-	private static void search(Map<Integer, List<Node>> map, PriorityQueue<Node> pq, boolean[] visited){
+	private static void search(List<Node>[] arr, PriorityQueue<Node> pq, boolean[] visited){
 		Node node = pq.poll();
 		visited[node.getValue()] = true;
-		
+
 		if(node.getValue() == endPoint){
 			System.out.println(node.getWeight());
 			return;
 		}
 
-		for(Node n: map.get(node.getValue())){
+		for(Node n: arr[node.getValue()]){
 			if(!visited[n.getValue()]){
 				pq.add(new Node(n.getValue(), node.getWeight() + n.getWeight()));
 			}
 		}
 	}
 
-	private static Map<Integer, List<Node>> getInput(BufferedReader br) throws IOException{
+	private static List<Node>[] getInput(BufferedReader br) throws IOException{
 		cityCount = Integer.parseInt(br.readLine());
-		busCount = Integer.parseInt(br.readLine());
+		int busCount = Integer.parseInt(br.readLine());
 
-		Map<Integer, List<Node>> map = new HashMap<>();
+		List<Node>[] arr = new ArrayList[cityCount + 1];
 		for(int i = 1; i <= cityCount; i++){
-			map.put(i,new LinkedList<>());
+			arr[i] = new ArrayList<>();
 		}
 
 		for(int i = 0; i < busCount; i++){
@@ -56,14 +55,14 @@ public class Main{
 			int start = Integer.parseInt(input[0]);
 			int end = Integer.parseInt(input[1]);
 			int weight = Integer.parseInt(input[2]);
-			map.get(start).add(new Node(end, weight));
+			arr[start].add(new Node(end, weight));
 		}
 
 		String[] input = br.readLine().split(" ");
 		startPoint = Integer.parseInt(input[0]);
 		endPoint = Integer.parseInt(input[1]);
 
-		return map;
+		return arr;
 	}
 
 	private static class Node implements Comparable<Node>{
