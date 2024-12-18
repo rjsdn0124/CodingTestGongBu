@@ -5,6 +5,7 @@ public class Main{
 	static int x;
 	static int y;
 	static int z;
+	static int zeroCount;
 	static int[] dx = new int[]{1 , -1};
 	static int[] dy = new int[]{1 , -1};
 	static int[] dz = new int[]{1 , -1};
@@ -17,6 +18,7 @@ public class Main{
 		int result = solution(q);
 
 		System.out.println(result);
+		br.close();
 	}
 
 	private static int solution(Queue<Coord> q){
@@ -26,14 +28,8 @@ public class Main{
 			days = updateTomatoes(tomatoes, q);
 		}
 
-		for(int i = 0; i < z; i++){
-			for(int j = 0; j < y; j++){
-				for(int k = 0; k < x; k++){
-					if(tomatoes[i][j][k] == 0){
-						return -1;
-					}
-				}
-			}
+		if(zeroCount > 0){
+			return -1;
 		}
 
 		return days;
@@ -52,16 +48,19 @@ public class Main{
 
 			if(0 <= nz && nz < z && tomatoes[nz][cy][cx] == 0){
 				tomatoes[nz][cy][cx] = 1;
+				zeroCount--;
 				q.add(new Coord(cx, cy, nz, co.getDays() + 1));
 			}
 
 			if(0 <= ny && ny < y && tomatoes[cz][ny][cx] == 0){
 				tomatoes[cz][ny][cx] = 1;
+				zeroCount--;
 				q.add(new Coord(cx, ny, cz, co.getDays() + 1));
 			}
 
 			if(0 <= nx && nx < x && tomatoes[cz][cy][nx] == 0){
 				tomatoes[cz][cy][nx] = 1;
+				zeroCount--;
 				q.add(new Coord(nx, cy, cz, co.getDays() + 1));
 			}
 		}
@@ -84,6 +83,8 @@ public class Main{
 					tomatoes[i][j][k] = Integer.parseInt(input[k]);
 					if(tomatoes[i][j][k] == 1){
 						que.add(new Coord(k, j, i, 0));
+					}else if(tomatoes[i][j][k] == 0){
+						zeroCount++;
 					}
 				}
 			}
