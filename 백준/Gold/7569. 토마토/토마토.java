@@ -40,6 +40,7 @@ public class Main{
 		int cx = co.getX();
 		int cy = co.getY();
 		int cz = co.getZ();
+		int days = co.getDays() + 1;
 
 		for(int i = 0; i < 2; i++){
 			int nz = cz + dz[i];
@@ -49,19 +50,19 @@ public class Main{
 			if(0 <= nz && nz < z && tomatoes[nz][cy][cx] == 0){
 				tomatoes[nz][cy][cx] = 1;
 				zeroCount--;
-				q.add(new Coord(cx, cy, nz, co.getDays() + 1));
+				q.add(new Coord(cx, cy, nz, days));
 			}
 
 			if(0 <= ny && ny < y && tomatoes[cz][ny][cx] == 0){
 				tomatoes[cz][ny][cx] = 1;
 				zeroCount--;
-				q.add(new Coord(cx, ny, cz, co.getDays() + 1));
+				q.add(new Coord(cx, ny, cz, days));
 			}
 
 			if(0 <= nx && nx < x && tomatoes[cz][cy][nx] == 0){
 				tomatoes[cz][cy][nx] = 1;
 				zeroCount--;
-				q.add(new Coord(nx, cy, cz, co.getDays() + 1));
+				q.add(new Coord(nx, cy, cz, days));
 			}
 		}
 		return co.getDays();
