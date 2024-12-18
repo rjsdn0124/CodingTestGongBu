@@ -45,9 +45,9 @@ public class Main{
 		cityCount = Integer.parseInt(br.readLine());
 		int busCount = Integer.parseInt(br.readLine());
 
-		List<Node>[] arr = new ArrayList[cityCount + 1];
+		List<Node>[] arr = new LinkedList[cityCount + 1];
 		for(int i = 1; i <= cityCount; i++){
-			arr[i] = new ArrayList<>();
+			arr[i] = new LinkedList<>();
 		}
 
 		for(int i = 0; i < busCount; i++){
