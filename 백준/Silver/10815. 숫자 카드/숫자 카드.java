@@ -18,21 +18,21 @@ public class Main{
 		int[] result = new int[m];
 
 		for(int i = 0; i < m; i++){
-			result[i] = binarySearch(arr, 0, n, requirement[i]);
+			result[i] = binarySearch(arr, 0, n - 1, requirement[i]);
 		}
 
 		return result;
 	}
 
 	private static int binarySearch(int[] arr, int start, int end, int target){
-		if(start >= end) {
+		if(start > end) {
 			return 0;
 		}
 		int m = (start + end) / 2;
 		if(arr[m] > target){
-			return binarySearch(arr, start, m, target);
+			return binarySearch(arr, start, m - 1, target);
 		}else if(arr[m] < target){
-			return binarySearch(arr, m+1, end, target);
+			return binarySearch(arr, m + 1, end, target);
 		}else{
 			return 1;
 		}
@@ -40,9 +40,11 @@ public class Main{
 
 	private static void printResult(int[] result){
 		// result 출력.
+		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < m; i++){
-			System.out.print(result[i] + " ");
+			sb.append(result[i]).append(" ");
 		}
+		System.out.println(sb);
 	}
 
 	private static int[] getInput(BufferedReader br) throws IOException{
