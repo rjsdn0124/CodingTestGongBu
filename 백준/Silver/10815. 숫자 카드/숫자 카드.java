@@ -2,52 +2,29 @@ import java.io.*;
 import java.util.*;
 
 public class Main{
-	private static int n;
-	private static int m;
-	private static int[] requirement;
-
+	public static int n;
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int[] arr = getInput(br);
-		int[] result = solution(arr);
-
-		printResult(result);
+		solution(br);
 	}
 
-	private static int[] solution(int[] arr){
-		int[] result = new int[m];
-
-		for(int i = 0; i < m; i++){
-			result[i] = binarySearch(arr, 0, n - 1, requirement[i]);
+	private static int binarySearch(int[] arr, int target){
+		int start = 0;
+		int end = n - 1;
+		while(start <= end) {
+			int m = (start + end) / 2;
+			if(arr[m] > target){
+				end = m - 1;
+			}else if(arr[m] < target){
+				start = m + 1;
+			}else{
+				return 1;
+			}
 		}
-
-		return result;
+		return 0;
 	}
 
-	private static int binarySearch(int[] arr, int start, int end, int target){
-		if(start > end) {
-			return 0;
-		}
-		int m = (start + end) / 2;
-		if(arr[m] > target){
-			return binarySearch(arr, start, m - 1, target);
-		}else if(arr[m] < target){
-			return binarySearch(arr, m + 1, end, target);
-		}else{
-			return 1;
-		}
-	}
-
-	private static void printResult(int[] result){
-		// result 출력.
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < m; i++){
-			sb.append(result[i]).append(" ");
-		}
-		System.out.println(sb);
-	}
-
-	private static int[] getInput(BufferedReader br) throws IOException{
+	private static void solution(BufferedReader br) throws IOException{
 		// 입력.
 		n = Integer.parseInt(br.readLine());
 		int[] arr = new int[n];
@@ -59,15 +36,16 @@ public class Main{
 
 		Arrays.sort(arr);
 
-		m = Integer.parseInt(br.readLine());
-		requirement = new int[m];
+		int m = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
 
 		input = br.readLine().split(" ");
+
 		for(int i = 0; i < m; i++){
-			requirement[i] = Integer.parseInt(input[i]);
+			int result = binarySearch(arr, Integer.parseInt(input[i]));
+			sb.append(result).append(" ");
 		}
 
-		return arr;
+		System.out.println(sb);
 	}
 }
-
