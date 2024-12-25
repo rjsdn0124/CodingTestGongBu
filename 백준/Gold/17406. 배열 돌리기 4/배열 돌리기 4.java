@@ -1,22 +1,23 @@
 import java.io.*;
-import java.util.*;
 
 public class Main{
 	private static int n;
 	private static int m;
 	private static int[][] arr;
 	private static int result = Integer.MAX_VALUE;
+	private static int[] dx = {1, 0, -1, 0};
+	private static int[] dy = {0, 1, 0, -1};
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int[][] rotate = getInput(br);
 
-		backtracking(arr, rotate, new boolean[rotate.length], 0);
+		backtracking(rotate, new boolean[rotate.length], 0);
 
 		System.out.println(result);
 	}
 
-	private static void backtracking(int[][] arr, int[][] rotate, boolean[] visited, int depth){
+	private static void backtracking(int[][] rotate, boolean[] visited, int depth){
 		if(depth == rotate.length){
 			int tempResult = getMinSum(arr);
 			result = Math.min(result, tempResult);
@@ -27,42 +28,35 @@ public class Main{
 		for(int i = 0; i < rotate.length; i++){
 			if(!visited[i]){
 				visited[i] = true;
-				int[][] tempArr = rotateArr(rotate[i], arr);
-				backtracking(tempArr, rotate, visited, depth);
+				rotateArr(rotate[i], true);
+				backtracking(rotate, visited, depth);
+				rotateArr(rotate[i], false);
 				visited[i] = false;
 			}
 		}
 	}
 
-	private static int[][] rotateArr(int[] rotate, int[][] arr){
-		int[][] newArr = new int[n][m];
-
-		for(int i = 0; i < n; i++){
-			newArr[i] = Arrays.copyOf(arr[i], m);
-		}
-
+	private static void rotateArr(int[] rotate, boolean isClockWay){
 		int x = rotate[1] - 1;
 		int y = rotate[0] - 1;
 		int size = rotate[2];
-
-		int[] dx = {1, 0, -1, 0};
-		int[] dy = {0, 1, 0, -1};
+		int[] tdx = isClockWay ? dx : dy;
+		int[] tdy = isClockWay ? dy : dx;
 
 		for(int i = 1; i <= size; i++){
 			int nx = x - i;
 			int ny = y - i;
-			int next = newArr[ny][nx];
+			int next = arr[ny][nx];
 
 			for(int j = 0; j < 8 * i; j++){
 				int now = next;
 				int direction = j / (2 * i);
-				ny += dy[direction];
-				nx += dx[direction];
-				next = newArr[ny][nx];
-				newArr[ny][nx] = now;
+				ny += tdy[direction];
+				nx += tdx[direction];
+				next = arr[ny][nx];
+				arr[ny][nx] = now;
 			}
 		}
-		return newArr;
 	}
 
 	private static int getMinSum(int[][] arr){
@@ -104,4 +98,3 @@ public class Main{
 		return rotate;
 	}
 }
-
