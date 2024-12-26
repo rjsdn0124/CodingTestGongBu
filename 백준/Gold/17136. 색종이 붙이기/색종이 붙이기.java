@@ -18,20 +18,20 @@ public class Main{
 	private static int solution(boolean[][] arr){
 		// 색종이 사용 현황 저장 배열
 		int[] papers = new int[PAPER_SIZE + 1];
-		canPaperIn(arr, papers);
+		canPaperIn(arr, papers, 0, 0);
 
 		return result;
 	}
 
-	private static void canPaperIn(boolean[][] arr, int[] papers){
-		for(int i = 0; i < SIZE; i++){
+	private static void canPaperIn(boolean[][] arr, int[] papers, int startY, int sum){
+		for(int i = startY; i < SIZE; i++){
 			for(int j = 0; j < SIZE; j++){
 				if(arr[i][j]){
 					for(int k = PAPER_SIZE; k > 0; k--){
 						if(search(k, j, i, arr) && papers[k] < 5){
 							updateArr(k, j, i, arr, false);
 							papers[k]++;
-							canPaperIn(arr, papers);
+							canPaperIn(arr, papers, i, sum + 1);
 							updateArr(k, j, i, arr, true);
 							papers[k]--;
 
@@ -41,15 +41,9 @@ public class Main{
 				}
 			}
 		}
-		int res = 0;
-		for(int i = PAPER_SIZE; i > 0; i--){
-			if(papers[i] > 5) {
-				return;
-			}
-			res += papers[i];
-		}
+
 		canConcile = true;
-		result = Math.min(result, res);
+		result = Math.min(result, sum);
 	}
 
 	private static boolean search(int paperSize, int x, int y, boolean[][] arr){
