@@ -18,20 +18,25 @@ public class Main{
 		int result = 0;
 		int totalMove = 0;
 		boolean[] visited = new boolean[m];
-		int pointer = m - 1;
+		int[] pointers = new int[n];
+		for(int i = 0; i < n; i++){
+			pointers[i] = m - 1;
+		}
 
 		while(totalMove < m){
-			int thisPoint = pointer;
+			if(n == 1 || pointers[n - 2] == -1){
+				result += m - totalMove;
+				break;
+			}
 			for(int i = n - 1; i >= 0; i--){
-				for(int j = thisPoint; j >= 0; j--){
+				for(int j = pointers[i]; j >= 0; j--){
 					if(!visited[j] && container[j] <= crain[i]){
 						totalMove++;
 						visited[j] = true;
-						thisPoint = j - 1;
-						if(i == n - 1){
-							pointer = thisPoint;
-						}
+						pointers[i] = j - 1;
 						break;
+					}else if(j == 0){
+						pointers[i] = -1;
 					}
 				}
 			}
