@@ -15,7 +15,7 @@ public class Main{
 	private static int solution(PriorityQueue<Edge> pq){
 		int result = 0;
 		int[] groupNum = new int[n + 1];
-		List<Integer>[] group = new LinkedList[n + 1];
+		Map<Integer, List<Integer>> group = new HashMap<>();
 		int headGroupNum = 1;
 
 		while(!pq.isEmpty()){
@@ -23,27 +23,29 @@ public class Main{
 			int[] nodes = e.getNodes();
 			if(groupNum[nodes[0]] > 0 && groupNum[nodes[1]] > 0){
 				if(groupNum[nodes[0]] != groupNum[nodes[1]]){
-					for(int n: group[groupNum[nodes[1]]]){
+					for(int n: group.get(groupNum[nodes[1]])){
 						groupNum[n] = groupNum[nodes[0]];
-						group[groupNum[n]].add(n);
+						group.get(groupNum[n]).add(n);
 					}
 				}
 				else continue;
 			}
-			else{
-				if(groupNum[nodes[0]] > 0){
-					groupNum[nodes[1]] = groupNum[nodes[0]];
-					group[groupNum[nodes[1]]].add(nodes[1]);
-				} else if(groupNum[nodes[1]] > 0){
-					groupNum[nodes[0]] = groupNum[nodes[1]];
-					group[groupNum[nodes[0]]].add(nodes[0]);
+			else {
+				int gn1 = groupNum[nodes[0]];
+				int gn2 = groupNum[nodes[1]];
+				if (gn1 > 0) {
+					groupNum[nodes[1]] = gn1;
+					group.get(gn1).add(nodes[1]);
+				} else if (gn2 > 0) {
+					groupNum[nodes[0]] = gn2;
+					group.get(gn2).add(nodes[0]);
 				} else {
-					group[headGroupNum] = new LinkedList<>();
-					for(int i = 0; i < 2; i++){
+					List<Integer> list = new LinkedList<>();
+					for (int i = 0; i < 2; i++) {
 						groupNum[nodes[i]] = headGroupNum;
-						group[headGroupNum].add(nodes[i]);
+						list.add(nodes[i]);
 					}
-					headGroupNum++;
+					group.put(headGroupNum++, list);
 				}
 			}
 			result += e.getWeight();
