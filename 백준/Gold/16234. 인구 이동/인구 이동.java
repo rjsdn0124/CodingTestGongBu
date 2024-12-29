@@ -18,22 +18,21 @@ public class Main{
 	public static int solution(Section[][] arr){
 		int result = 0;
 		Queue<Integer> q = new LinkedList<>();
+		boolean[][] visited;
 		while(true){
 			boolean isUpdated = false;
-			boolean[][] visited = new boolean[n][n];
+			visited = new boolean[n][n];
 
 			for(int i = 0; i < n; i++){
 				for(int j = 0; j < n; j++){
 					if(!visited[i][j]){
+						visited[i][j] = true;
 						boolean canUpdate = false;
 						for(int k = 0; k < 2; k++){
-							int nx = j + dx[k];
-							int ny = i + dy[k];
-							canUpdate |= canGoNext(nx, ny, arr[i][j].getValue(), arr, visited);
+							canUpdate |= canGoNext(j + dx[k], i + dy[k], arr[i][j].getValue(), arr, visited);
 						}
 						if(canUpdate){
 							q.add(createMyXY(j, i));
-							visited[i][j] = true;
 							bfs(q, arr, visited);
 							isUpdated = true;
 						}
