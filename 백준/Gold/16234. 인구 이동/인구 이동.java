@@ -25,9 +25,18 @@ public class Main{
 			for(int i = 0; i < n; i++){
 				for(int j = 0; j < n; j++){
 					if(!visited[i][j]){
-						q.add(createMyXY(j, i));
-						visited[i][j] = true;
-						isUpdated |= bfs(q, arr[i][j].getValue(), arr, visited);
+						boolean canUpdate = false;
+						for(int k = 0; k < 2; k++){
+							int nx = j + dx[k];
+							int ny = i + dy[k];
+							canUpdate |= canGoNext(nx, ny, arr[i][j].getValue(), arr, visited);
+						}
+						if(canUpdate){
+							q.add(createMyXY(j, i));
+							visited[i][j] = true;
+							bfs(q, arr, visited);
+							isUpdated = true;
+						}
 					}
 				}
 			}
@@ -41,8 +50,8 @@ public class Main{
 		return result;
 	}
 
-	public static boolean bfs(Queue<Integer> q, int prevVal, Section[][] arr, boolean[][] visited){
-		Section s = new Section(prevVal);
+	public static void bfs(Queue<Integer> q, Section[][] arr, boolean[][] visited){
+		Section s = new Section(0);
 		int sum = 0;
 		int count = 0;
 
@@ -51,27 +60,28 @@ public class Main{
 			int x = myXY / 100;
 			int y = myXY % 100;
 			int prev = arr[y][x].getValue();
-			sum += prev;
 			arr[y][x] = s;
+			sum += prev;
 			count++;
 
 			for(int i = 0; i < 4; i++){
 				int nx = x + dx[i];
 				int ny = y + dy[i];
-				if(0 <= nx && nx < n && 0 <= ny && ny < n && !visited[ny][nx]){
-					int gap = Math.abs(prev - arr[ny][nx].getValue());
-					if(min <= gap && gap <= max){
-						q.add(createMyXY(nx, ny));
-						visited[ny][nx] = true;
-					}
+				if(canGoNext(nx, ny, prev, arr, visited)){
+					q.add(createMyXY(nx, ny));
+					visited[ny][nx] = true;
 				}
 			}
 		}
 
-		if(count > 1){
-			int avg = sum / count;
-			s.setValue(avg);
-			return true;
+		int avg = sum / count;
+		s.setValue(avg);
+	}
+
+	private static boolean canGoNext(int nx, int ny, int prev, Section[][] arr, boolean[][] visited){
+		if(0 <= nx && nx < n && 0 <= ny && ny < n && !visited[ny][nx]){
+			int gap = Math.abs(prev - arr[ny][nx].getValue());
+			return min <= gap && gap <= max;
 		}
 		return false;
 	}
