@@ -17,6 +17,7 @@ public class Main{
 
 	public static int solution(Section[][] arr){
 		int result = 0;
+		Queue<Integer> q = new LinkedList<>();
 		while(true){
 			boolean isUpdated = false;
 			boolean[][] visited = new boolean[n][n];
@@ -24,7 +25,9 @@ public class Main{
 			for(int i = 0; i < n; i++){
 				for(int j = 0; j < n; j++){
 					if(!visited[i][j]){
-						isUpdated |= bfs(j, i, arr, visited);
+						q.add(createMyXY(j, i));
+						visited[i][j] = true;
+						isUpdated |= bfs(q, arr[i][j].getValue(), arr, visited);
 					}
 				}
 			}
@@ -38,28 +41,27 @@ public class Main{
 		return result;
 	}
 
-	public static boolean bfs(int x, int y, Section[][] arr, boolean[][] visited){
-		Queue<int[]> q = new LinkedList<>();
-		Section s = new Section(arr[y][x].getValue());
-		q.add(new int[] { x, y });
-		visited[y][x] = true;
+	public static boolean bfs(Queue<Integer> q, int prevVal, Section[][] arr, boolean[][] visited){
+		Section s = new Section(prevVal);
 		int sum = 0;
 		int count = 0;
 
 		while(!q.isEmpty()){
-			int[] xy = q.poll();
-			int prev = arr[xy[1]][xy[0]].getValue();
+			int myXY = q.poll();
+			int x = myXY / 100;
+			int y = myXY % 100;
+			int prev = arr[y][x].getValue();
 			sum += prev;
-			arr[xy[1]][xy[0]] = s;
+			arr[y][x] = s;
 			count++;
 
 			for(int i = 0; i < 4; i++){
-				int nx = xy[0] + dx[i];
-				int ny = xy[1] + dy[i];
+				int nx = x + dx[i];
+				int ny = y + dy[i];
 				if(0 <= nx && nx < n && 0 <= ny && ny < n && !visited[ny][nx]){
 					int gap = Math.abs(prev - arr[ny][nx].getValue());
 					if(min <= gap && gap <= max){
-						q.add(new int[]{nx, ny});
+						q.add(createMyXY(nx, ny));
 						visited[ny][nx] = true;
 					}
 				}
@@ -72,6 +74,10 @@ public class Main{
 			return true;
 		}
 		return false;
+	}
+
+	private static int createMyXY(int x, int y){
+		return x * 100 + y;
 	}
 
 	private static Section[][] getInput(BufferedReader br) throws IOException{
