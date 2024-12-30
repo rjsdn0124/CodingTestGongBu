@@ -22,6 +22,7 @@ public class Main{
 			int[] xy = new int[2];
 			boolean[][] visited = new boolean[n][n];
 
+			// 배열 돌면서 체크.
 			for(int i = 0; i < n; i++){
 				for(int j = 0; j < n; j++){
 					if(!visited[i][j] && arr[i][j] > 0 && canGoNext(arr, j, i)){
@@ -36,10 +37,14 @@ public class Main{
 			}
 
 			if(bestResult[0] < 2){
+				// 결과가 안 나오면 끝내기.
 				break;
 			}
+
+			// 결과 저장하기.
 			result += bestResult[0] * bestResult[0];
 
+			// 다음 집합을 찾기 위해 처리.
 			removeArr(xy[0], xy[1], arr);
 			gravity(arr);
 			arr = rotate(arr);
@@ -49,9 +54,11 @@ public class Main{
 	}
 
 	public static int[] bfs(int x, int y, int[][] arr, boolean[][] visited){
+		// bfs 돌면서 집합 찾기.
 		Queue<Integer> q = new LinkedList<>();
 		q.add(createMyInt(x, y));
 		visited[y][x] = true;
+		// 0 지났는지 체크하는 visited
 		boolean[][] zVisited = new boolean[n][n];
 
 		int color = arr[y][x];
@@ -84,27 +91,27 @@ public class Main{
 	}
 
 	public static int createMyInt(int x, int y){
+		// 크기 2 배열 대신 int로 xy 저장.
 		return x * 100 + y;
 	}
 
 	public static boolean canGoNext(int[][] arr, int x, int y){
+		// 2개 이상의 집합 생성 가능 체크.
 		int color = arr[y][x];
-		boolean result = false;
 
 		for(int i = 0 ; i < 4; i++){
 			int nx = x + dx[i];
 			int ny = y + dy[i];
 
-			if(0 <= nx && nx < n && 0 <= ny && ny < n){
-				if(arr[ny][nx] == 0 || arr[ny][nx] == color){
-					result = true;
-				}
+			if(0 <= nx && nx < n && 0 <= ny && ny < n && (arr[ny][nx] == 0 || arr[ny][nx] == color)){
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 
 	public static void removeArr(int x, int y, int[][] arr){
+		// bfs 다시 돌면서 만들어진 집합 삭제 처리.
 		boolean[][] visited = new boolean[n][n];
 		Queue<Integer> q = new LinkedList<>();
 		q.add(createMyInt(x, y));
@@ -131,6 +138,7 @@ public class Main{
 	}
 
 	private static void gravity(int[][] arr){
+		// 중력 처리.
 		for(int i = 0; i < n; i++){
 			int ty = n - 1;
 			for(int j = ty; j >= 0; j--) {
@@ -147,6 +155,7 @@ public class Main{
 	}
 
 	private static int[][] rotate(int[][] arr){
+		// 회전 처리.
 		int[][] nArr = new int[n][n];
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < n; j++){
