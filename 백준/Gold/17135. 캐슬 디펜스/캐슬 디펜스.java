@@ -32,7 +32,7 @@ public class Main{
 		int result = 0;
 
 
-		for(int i = N - 1; i >= 0; i--){
+		for(int i = 1; i <= N; i++){
 			for(int archer: archers){
 				result += shoot(arr, isKilled, archer, i);
 			}
@@ -43,36 +43,28 @@ public class Main{
 
 	private static int shoot(int[][] arr, int[][] isKilled, int archerLoc, int turn){
 		for(int i = 0; i < D; i++){
-			int x = archerLoc - i;
-			int y = turn;
-			for(int j = 0; j < i; j++){
-				if(canKill(arr, isKilled, x, y, turn)){
-					if(isKilled[y][x] == turn + 1){
+			int y = N - turn;
+			int dy = -1;
+			for(int x = archerLoc - i; x <= archerLoc + i; x++){
+				if(canKill(arr, x, y)){
+					if(isKilled[y][x] == turn){
 						return 0;
+					} else if(isKilled[y][x] == 0){
+						isKilled[y][x] = turn;
+						return 1;
 					}
-					isKilled[y][x] = turn + 1;
-					return 1;
 				}
-				x++;
-				y--;
-			}
-			for(int j = 0; j <= i; j++){
-				if(canKill(arr, isKilled, x, y, turn)){
-					if(isKilled[y][x] == turn + 1){
-						return 0;
-					}
-					isKilled[y][x] = turn + 1;
-					return 1;
+				if(x == archerLoc){
+					dy = 1;
 				}
-				x++;
-				y++;
+				y += dy;
 			}
 		}
 		return 0;
 	}
 
-	private static boolean canKill(int[][] arr, int[][] isKilled, int x, int y, int turn){
-		return x >= 0 && x < M && y >= 0 && y < N && arr[y][x] > 0 && isKilled[y][x] <= turn + 1;
+	private static boolean canKill(int[][] arr, int x, int y){
+		return x >= 0 && x < M && y >= 0 && y < N && arr[y][x] > 0;
 	}
 
 	private static int[][] getInput(BufferedReader br) throws IOException{
@@ -93,4 +85,3 @@ public class Main{
 		return arr;
 	}
 }
-
