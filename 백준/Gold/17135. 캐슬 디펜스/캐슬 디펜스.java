@@ -28,54 +28,51 @@ public class Main{
 	}
 
 	private static int defense(int[][] arr, int[] archers){
-		boolean[][] isKilled = new boolean[N][M];
+		int[][] isKilled = new int[N][M];
 		int result = 0;
 
 
-		for(int i = 0; i < N; i++){
-			Set<Integer> set = new HashSet<>();
+		for(int i = N - 1; i >= 0; i--){
 			for(int archer: archers){
-				int myXY = shoot(arr, isKilled, archer, i);
-				if(myXY >= 0){
-					set.add(myXY);
-				}
-			}
-
-			for(int xy: set){
-				int x = xy / 100;
-				int y = xy % 100;
-				isKilled[y][x] = true;
-				result++;
+				result += shoot(arr, isKilled, archer, i);
 			}
 		}
 
 		return result;
 	}
 
-	private static int shoot(int[][] arr, boolean[][] isKilled, int archerLoc, int turn){
+	private static int shoot(int[][] arr, int[][] isKilled, int archerLoc, int turn){
 		for(int i = 0; i < D; i++){
 			int x = archerLoc - i;
-			int y = N - turn - 1;
+			int y = turn;
 			for(int j = 0; j < i; j++){
-				if(canKill(arr, isKilled, x, y)){
-					return x * 100 + y;
+				if(canKill(arr, isKilled, x, y, turn)){
+					if(isKilled[y][x] == turn + 1){
+						return 0;
+					}
+					isKilled[y][x] = turn + 1;
+					return 1;
 				}
 				x++;
 				y--;
 			}
 			for(int j = 0; j <= i; j++){
-				if(canKill(arr, isKilled, x, y)){
-					return x * 100 + y;
+				if(canKill(arr, isKilled, x, y, turn)){
+					if(isKilled[y][x] == turn + 1){
+						return 0;
+					}
+					isKilled[y][x] = turn + 1;
+					return 1;
 				}
 				x++;
 				y++;
 			}
 		}
-		return -1;
+		return 0;
 	}
 
-	private static boolean canKill(int[][] arr, boolean[][] isKilled, int x, int y){
-		return x >= 0 && x < M && y >= 0 && y < N && arr[y][x] > 0 && !isKilled[y][x];
+	private static boolean canKill(int[][] arr, int[][] isKilled, int x, int y, int turn){
+		return x >= 0 && x < M && y >= 0 && y < N && arr[y][x] > 0 && isKilled[y][x] <= turn + 1;
 	}
 
 	private static int[][] getInput(BufferedReader br) throws IOException{
@@ -96,3 +93,4 @@ public class Main{
 		return arr;
 	}
 }
+
