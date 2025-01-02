@@ -6,8 +6,6 @@ public class Main{
 	private static int M;
 	private static int SHARK_COUNT;
 	private static Shark[] sharks;
-	private static int[] dx = {0, 0, 1, -1};
-	private static int[] dy = {-1, 1, 0, 0};
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,7 +23,7 @@ public class Main{
 			// 낚고
 			result += fishing(i, arr);
 			// 상어 이동하고
-			arr = moving(arr);
+			arr = moving();
 		}
 
 		return result;
@@ -34,28 +32,32 @@ public class Main{
 	private static int fishing(int x, int[][] arr){
 		for(int i = 0; i < N; i++){
 			if(arr[i][x] > 0){
-				int size = sharks[arr[i][x]].size;
-				arr[i][x] = 0;
-				return size;
+				Shark shark = sharks[arr[i][x]];
+				shark.isDead = true;
+				return shark.size;
 			}
 		}
 
 		return 0;
 	}
 
-	private static int[][] moving(int[][] arr) {
+	private static int[][] moving() {
 		int[][] nArr = new int[N][M];
 
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if(arr[i][j] > 0){
-					Shark shark = sharks[arr[i][j]];
-					shark.move();
-					int x = shark.x;
-					int y = shark.y;
-					if(nArr[y][x] == 0 || sharks[nArr[y][x]].size < shark.size){
-						nArr[y][x] = arr[i][j];
-					}
+		for(int i = 1; i <= SHARK_COUNT; i++){
+			Shark shark = sharks[i];
+			if(!shark.isDead){
+				shark.move();
+				int x = shark.x;
+				int y = shark.y;
+
+				if(nArr[y][x] == 0){
+					nArr[y][x] = i;
+				} else if(nArr[y][x] > 0 && sharks[nArr[y][x]].size < shark.size){
+					sharks[nArr[y][x]].isDead = true;
+					nArr[y][x] = i;
+				}else{
+					shark.isDead = true;
 				}
 			}
 		}
@@ -89,6 +91,7 @@ public class Main{
 		int size;
 		int speed;
 		boolean isOnY;
+		boolean isDead;
 
 		public Shark(int x, int y, int speed, int direction, int size){
 			this.x = x;
@@ -105,6 +108,7 @@ public class Main{
 				speed = -speed;
 			}
 			this.speed = speed;
+			this.isDead = false;
 		}
 
 		public void move(){
