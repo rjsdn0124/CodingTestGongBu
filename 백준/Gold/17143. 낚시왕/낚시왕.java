@@ -53,7 +53,7 @@ public class Main{
 
 				if(nArr[y][x] == 0){
 					nArr[y][x] = i;
-				} else if(nArr[y][x] > 0 && sharks[nArr[y][x]].size < shark.size){
+				} else if(sharks[nArr[y][x]].size < shark.size){
 					sharks[nArr[y][x]].isDead = true;
 					nArr[y][x] = i;
 				}else{
