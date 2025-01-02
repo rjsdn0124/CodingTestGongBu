@@ -21,7 +21,7 @@ public class Main{
 		// 낚시꾼 이동하기
 		for(int i = 0; i < N; i++){
 			// 낚고
-			result += fishing(i, arr);
+			result += fishing(arr[i]);
 			// 상어 이동하고
 			arr = moving();
 		}
@@ -29,10 +29,10 @@ public class Main{
 		return result;
 	}
 
-	private static int fishing(int x, int[][] arr){
+	private static int fishing(int[] arr){
 		for(int i = 0; i < M; i++){
-			if(arr[x][i] > 0){
-				Shark shark = sharks[arr[x][i]];
+			if(arr[i] > 0){
+				Shark shark = sharks[arr[i]];
 				shark.isDead = true;
 				return shark.size;
 			}
