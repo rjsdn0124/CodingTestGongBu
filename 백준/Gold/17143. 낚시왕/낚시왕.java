@@ -19,7 +19,7 @@ public class Main{
 		int result = 0;
 		// 0부터 x까지 낚시 반복.
 		// 낚시꾼 이동하기
-		for(int i = 0; i < M; i++){
+		for(int i = 0; i < N; i++){
 			// 낚고
 			result += fishing(i, arr);
 			// 상어 이동하고
@@ -30,9 +30,9 @@ public class Main{
 	}
 
 	private static int fishing(int x, int[][] arr){
-		for(int i = 0; i < N; i++){
-			if(arr[i][x] > 0){
-				Shark shark = sharks[arr[i][x]];
+		for(int i = 0; i < M; i++){
+			if(arr[x][i] > 0){
+				Shark shark = sharks[arr[x][i]];
 				shark.isDead = true;
 				return shark.size;
 			}
@@ -56,7 +56,7 @@ public class Main{
 				} else if(sharks[nArr[y][x]].size < shark.size){
 					sharks[nArr[y][x]].isDead = true;
 					nArr[y][x] = i;
-				}else{
+				} else{
 					shark.isDead = true;
 				}
 			}
@@ -68,8 +68,8 @@ public class Main{
 	private static int[][] getInput(BufferedReader br) throws IOException {
 		// 입력.
 		String[] input = br.readLine().split(" ");
-		N = Integer.parseInt(input[0]);
-		M = Integer.parseInt(input[1]);
+		M = Integer.parseInt(input[0]);
+		N = Integer.parseInt(input[1]);
 		SHARK_COUNT = Integer.parseInt(input[2]);
 
 		int[][] arr = new int[N][M];
@@ -78,7 +78,7 @@ public class Main{
 		for(int i = 1; i <= SHARK_COUNT; i++){
 			input = br.readLine().split(" ");
 
-			sharks[i] = new Shark(Integer.parseInt(input[1]) - 1, Integer.parseInt(input[0]) - 1,Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
+			sharks[i] = new Shark(Integer.parseInt(input[0]) - 1, Integer.parseInt(input[1]) - 1,Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
 
 			arr[sharks[i].y][sharks[i].x] = i;
 		}
@@ -97,7 +97,7 @@ public class Main{
 			this.x = x;
 			this.y = y;
 			this.size = size;
-			if(direction < 3){
+			if(direction > 2){
 				isOnY = true;
 				speed %= (2 * (N - 1));
 			}else{
@@ -108,7 +108,6 @@ public class Main{
 				speed = -speed;
 			}
 			this.speed = speed;
-			this.isDead = false;
 		}
 
 		public void move(){
