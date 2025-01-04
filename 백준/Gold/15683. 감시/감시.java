@@ -17,6 +17,7 @@ public class Main{
 		{0,1,2},
 		{0,1,2,3}
 	};
+	private static int[] rTime = new int[]{0, 4, 2, 4, 4, 1};
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,7 +31,7 @@ public class Main{
 			for(int j = x; j < M; j++){
 				if(arr[i][j] > 0 && arr[i][j] < 6){
 					// 돌리기
-					for(int k = 0; k < 4; k++){
+					for(int k = 0; k < rTime[arr[i][j]]; k++){
 						// 커버 범위 찾기
 						int tc = updateArr(j, i, cctvInd, k);
 						count += tc;
