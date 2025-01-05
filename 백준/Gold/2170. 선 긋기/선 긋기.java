@@ -6,20 +6,19 @@ public class Main{
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		Line[] lines = getInput(br);
-		Arrays.sort(lines);
-		int result = solution(lines);
+		PriorityQueue<Line> pq = getInput(br);
+		int result = solution(pq);
 		System.out.println(result);
 	}
 
-	private static int solution(Line[] lines){
-		Line line = lines[0];
+	private static int solution(PriorityQueue<Line> pq){
 		int result = 0;
-		int start = line.start;
-		int end = line.end;
+		int start = Integer.MIN_VALUE;
+		int end = Integer.MIN_VALUE;
 
 		// 돌면서 시작 보다 끝이 작을 때까지 반복.
-		for(Line l: lines){
+		while(!pq.isEmpty()){
+			Line l = pq.poll();
 			if(l.start > end){
 				// 찾으면 길이 계산 및 시작점 갱신
 				result += end - start;
@@ -35,18 +34,17 @@ public class Main{
 	}
 
 
-	private static Line[] getInput(BufferedReader br) throws IOException {
+	private static PriorityQueue<Line> getInput(BufferedReader br) throws IOException {
 		// 입력.
 		N = Integer.parseInt(br.readLine());
 
-		Line[] arr = new Line[N];
-
+		PriorityQueue<Line> pq = new PriorityQueue<>();
 		for(int i = 0; i < N; i++){
 			String[] input = br.readLine().split(" ");
-			arr[i] = new Line(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
+			pq.add(new Line(Integer.parseInt(input[0]), Integer.parseInt(input[1])));
 		}
 
-		return arr;
+		return pq;
 	}
 }
 
