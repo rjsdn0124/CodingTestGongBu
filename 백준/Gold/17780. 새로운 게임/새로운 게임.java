@@ -1,29 +1,51 @@
 import java.io.*;
 import java.util.*;
 
-public class Main{
+public class Main {
 	private static int N;
 	private static int M;
-	private static int[][] unitLoc;
-	private static Unit[] units;
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int[][] arr = getInput(br);
-		int result = solution(arr);
+		String[] line = br.readLine().split(" ");
+		N = Integer.parseInt(line[0]);
+		M = Integer.parseInt(line[1]);
+
+		int[][] arr = new int[N][N];
+		int[][] unitLoc = new int[N][N];
+
+		for (int i = 0; i < N; i++) {
+			line = br.readLine().split(" ");
+			for (int j = 0; j < N; j++) {
+				arr[i][j] = Integer.parseInt(line[j]);
+			}
+		}
+
+		Unit[] units = new Unit[M + 1];
+		int x, y, dir;
+		for (int i = 1; i <= M; i++) {
+			line = br.readLine().split(" ");
+			y = Integer.parseInt(line[0]) - 1;
+			x = Integer.parseInt(line[1]) - 1;
+			dir = Integer.parseInt(line[2]) - 1;
+			unitLoc[y][x] = i;
+			units[i] = new Unit(x, y, dir, i);
+		}
+		int result = solution(arr, unitLoc, units);
 		System.out.println(result);
 	}
 
-	private static int solution(int[][] arr){
+	private static int solution(int[][] arr, int[][] unitLoc, Unit[] units) {
 		int x, y, turn = 0;
 		Unit u;
 
-		while(true){
+		while (true) {
 			turn++;
-			if(turn > 1000) return -1;
-			for(int i = 1; i <= M; i++){
+			if (turn > 1000)
+				return -1;
+			for (int i = 1; i <= M; i++) {
 				// 돌면서 말 번호대로 옮기기.
-				if(units[i] != null){
+				if (units[i] != null) {
 					u = units[i];
 					// 이전 위치 비우기
 					unitLoc[u.y][u.x] = 0;
@@ -33,12 +55,12 @@ public class Main{
 					x = u.x;
 					y = u.y;
 					// 이후 위치 할당.
-					if(unitLoc[y][x] != 0){
+					if (unitLoc[y][x] != 0) {
 						// 옮기려는 칸에 있따면 합치고 결과 체크.
-						if(units[unitLoc[y][x]].assemble(u)){
+						if (units[unitLoc[y][x]].assemble(u)) {
 							return turn;
 						}
-					}else{
+					} else {
 						// 옮기려는 칸에 없다면 그냥 배열 갱신.
 						unitLoc[y][x] = u.num;
 						units[u.num] = u;
@@ -47,37 +69,7 @@ public class Main{
 			}
 		}
 	}
-
-	private static int[][] getInput(BufferedReader br) throws IOException {
-		String[] line = br.readLine().split(" ");
-		N = Integer.parseInt(line[0]);
-		M = Integer.parseInt(line[1]);
-
-		int[][] arr = new int[N][N];
-		unitLoc = new int[N][N];
-
-		for(int i = 0; i < N; i++) {
-			line = br.readLine().split(" ");
-			for(int j = 0; j < N; j++){
-				arr[i][j] = Integer.parseInt(line[j]);
-			}
-		}
-
-		units = new Unit[M + 1];
-		int x, y, dir;
-		for(int i = 1; i <= M; i++){
-			line = br.readLine().split(" ");
-			y = Integer.parseInt(line[0]) - 1;
-			x = Integer.parseInt(line[1]) - 1;
-			dir = Integer.parseInt(line[2]) - 1;
-			unitLoc[y][x] = i;
-			units[i] = new Unit(x, y, dir, i);
-		}
-
-		return arr;
-	}
 }
-
 class Unit{
 	private static final int[] dx = {1, -1, 0, 0};
 	private static final int[] dy = {0, 0, -1, 1};
