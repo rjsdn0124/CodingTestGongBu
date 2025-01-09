@@ -23,8 +23,8 @@ public class Main{
 			if(turn > 1000) return -1;
 			for(int i = 1; i <= M; i++){
 				// 돌면서 말 번호대로 옮기기.
-				u = units[i];
-				if(u != null){
+				if(units[i] != null){
+					u = units[i];
 					// 이전 위치 비우기
 					unitLoc[u.y][u.x] = 0;
 					units[i] = null;
@@ -81,7 +81,7 @@ public class Main{
 class Unit{
 	private static final int[] dx = {1, -1, 0, 0};
 	private static final int[] dy = {0, 0, -1, 1};
-	int x, y, headDir, tailDir, num, tailNum, size;
+	int x, y, headDir, tailDir, num, tailNum, size = 1;
 
 	public Unit(int x, int y, int headDir, int num){
 		this.x = x;
@@ -90,7 +90,6 @@ class Unit{
 		this.tailDir = headDir;
 		this.num = num;
 		this.tailNum = num;
-		this.size = 1;
 	}
 
 	public void move(int[][] arr, int n){
@@ -129,11 +128,7 @@ class Unit{
 
 	private void negativeDir(){
 		// 방향 바꿔주기
-		int start = 0;
-		if(headDir >= 2){
-			start = 2;
-		}
-		headDir = start + (headDir + 1) % 2;
+		headDir = (headDir >= 2 ? 2 : 0) + (headDir + 1) % 2;
 		if(num == tailNum) tailDir = headDir;
 	}
 }
