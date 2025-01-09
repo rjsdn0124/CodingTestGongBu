@@ -22,6 +22,7 @@ public class Main{
 		int fMax = 0;
 		int sMax = 0;
 		visited[i] = true;
+
 		// 돌면서 리프 노드면 return 0
 		for(Edge e: edges[i]){
 			if(visited[e.target]) continue;
