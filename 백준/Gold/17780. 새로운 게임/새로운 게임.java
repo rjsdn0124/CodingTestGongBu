@@ -15,26 +15,31 @@ public class Main{
 	}
 
 	private static int solution(int[][] arr){
-		int turn = 0;
+		int x, y, turn = 0;
 		Unit u;
+
 		while(true){
 			turn++;
 			if(turn > 1000) return -1;
 			for(int i = 1; i <= M; i++){
+				// 돌면서 말 번호대로 옮기기.
 				u = units[i];
 				if(u != null){
-					int x = u.x;
-					int y = u.y;
-					unitLoc[y][x] = 0;
+					// 이전 위치 비우기
+					unitLoc[u.y][u.x] = 0;
 					units[i] = null;
+					// 말 옮기기
 					u.move(arr, N);
 					x = u.x;
 					y = u.y;
+					// 이후 위치 할당.
 					if(unitLoc[y][x] != 0){
+						// 옮기려는 칸에 있따면 합치고 결과 체크.
 						if(units[unitLoc[y][x]].assemble(u)){
 							return turn;
 						}
 					}else{
+						// 옮기려는 칸에 없다면 그냥 배열 갱신.
 						unitLoc[y][x] = u.num;
 						units[u.num] = u;
 					}
@@ -59,14 +64,14 @@ public class Main{
 		}
 
 		units = new Unit[M + 1];
+		int x, y, dir;
 		for(int i = 1; i <= M; i++){
 			line = br.readLine().split(" ");
-			int y = Integer.parseInt(line[0]) - 1;
-			int x = Integer.parseInt(line[1]) - 1;
-			int dir = Integer.parseInt(line[2]) - 1;
-			Unit unit = new Unit(x, y, dir, i);
+			y = Integer.parseInt(line[0]) - 1;
+			x = Integer.parseInt(line[1]) - 1;
+			dir = Integer.parseInt(line[2]) - 1;
 			unitLoc[y][x] = i;
-			units[i] = unit;
+			units[i] = new Unit(x, y, dir, i);
 		}
 
 		return arr;
@@ -76,8 +81,7 @@ public class Main{
 class Unit{
 	private static final int[] dx = {1, -1, 0, 0};
 	private static final int[] dy = {0, 0, -1, 1};
-	int x, y, headDir, tailDir, num, tailNum;
-	int size;
+	int x, y, headDir, tailDir, num, tailNum, size;
 
 	public Unit(int x, int y, int headDir, int num){
 		this.x = x;
@@ -93,6 +97,8 @@ class Unit{
 		int nx = x + dx[headDir];
 		int ny = y + dy[headDir];
 		if(!(0 <= nx && nx < n && 0 <= ny && ny < n) || arr[ny][nx] == 2){
+			// 파랗거나 배열 밖일 때 처리.
+			// 방향 전환 후 다시 이동.
 			negativeDir();
 			nx = x + dx[headDir];
 			ny = y + dy[headDir];
@@ -100,6 +106,7 @@ class Unit{
 				return;
 			}
 		}
+		// 가장 아래 말의 방향과 번호 -> 가장 위 말의 방향과 번호 바꾸기
 		if(arr[ny][nx] == 1){
 			int temp = headDir;
 			headDir = tailDir;
@@ -113,6 +120,7 @@ class Unit{
 	}
 
 	public boolean assemble(Unit unit){
+		// 위로 쌓기.
 		this.tailDir = unit.tailDir;
 		this.tailNum = unit.tailNum;
 		this.size += unit.size;
@@ -120,6 +128,7 @@ class Unit{
 	}
 
 	private void negativeDir(){
+		// 방향 바꿔주기
 		int start = 0;
 		if(headDir >= 2){
 			start = 2;
