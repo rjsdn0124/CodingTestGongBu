@@ -18,9 +18,8 @@ public class Main{
 		int x, y, turn = 0;
 		Unit u;
 
-		while(true){
-			if(++turn > 1000) return -1;
-			for(int i = 1; i <= M; i++){
+		while(turn++ < 1000){
+			for(int i = 1; i < M; i++){
 				// 돌면서 말 번호대로 옮기기.
 				if(units[i] != null){
 					u = units[i];
@@ -45,12 +44,13 @@ public class Main{
 				}
 			}
 		}
+		return -1;
 	}
 
 	private static int[][] getInput(BufferedReader br) throws IOException {
 		String[] line = br.readLine().split(" ");
 		N = Integer.parseInt(line[0]);
-		M = Integer.parseInt(line[1]);
+		M = Integer.parseInt(line[1]) + 1;
 
 		int[][] arr = new int[N][N];
 		unitLoc = new int[N][N];
@@ -62,9 +62,9 @@ public class Main{
 			}
 		}
 
-		units = new Unit[M + 1];
+		units = new Unit[M];
 		int x, y, dir;
-		for(int i = 1; i <= M; i++){
+		for(int i = 1; i < M; i++){
 			line = br.readLine().split(" ");
 			y = Integer.parseInt(line[0]) - 1;
 			x = Integer.parseInt(line[1]) - 1;
