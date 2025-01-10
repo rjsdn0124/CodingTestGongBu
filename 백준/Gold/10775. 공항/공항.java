@@ -20,16 +20,18 @@ public class Main{
 	}
 
 	private static boolean solution(Gate[] gates, int g){
-		Gate gate = new Gate(g);
-		while(gates[g] != null){
-			gate = gates[g];
-			g = gate.num;
-			if(g < 1) return false;
-		}
-		gate.num -= 1;
-		gates[g] = gate;
+		return dfs(gates, new Gate(g), g) >= 0;
+	}
 
-		return true;
+	private static int dfs(Gate[] gates, Gate gate, int g){
+		int x = g - 1;
+		if(gates[g] != null){
+			x = dfs(gates, gates[g], gates[g].num);
+		}else{
+			gates[g] = gate;
+		}
+		gates[g].num = x;
+		return x;
 	}
 }
 
