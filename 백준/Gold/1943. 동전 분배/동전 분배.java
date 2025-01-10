@@ -7,12 +7,14 @@ public class Main{
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < 3; i++){
 			sum = 0;
 			int[][] arr = getInput(br);
 
-			System.out.println(solution(arr));
+			sb.append(solution(arr)).append("\n");
 		}
+		System.out.println(sb);
 	}
 
 	private static int solution(int[][] arr){
