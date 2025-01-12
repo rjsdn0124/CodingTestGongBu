@@ -14,10 +14,8 @@ public class Main{
 
 	private static void solution(int[] arr, StringBuilder sb){
 		long[] dp = dp();
-		long min;
 		for(int i: arr){
-			min = findMin(i, dp);
-			sb.append(min);
+			sb.append(findMin(i, dp));
 			sb.append(" ");
 			findMax(i, sb);
 			sb.append("\n");
@@ -55,9 +53,9 @@ public class Main{
 			sb.append(7);
 			torchCount -= 3;
 		}
-		while(torchCount > 0){
+		torchCount /= 2;
+		while(torchCount-- > 0){
 			sb.append(1);
-			torchCount -= 2;
 		}
 	}
 
