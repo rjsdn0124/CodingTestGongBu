@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Main{
 	private static int N, K;
-	private static int[][] arr;
+	private static Queue<int[]> jewelQue = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
 	private static Queue<Integer> bagQue = new PriorityQueue<>();
 	private static Queue<Integer> valueQue = new PriorityQueue<>(Comparator.reverseOrder());
 
@@ -16,11 +16,10 @@ public class Main{
 
 	private static long solution(){
 		long result = 0;
-		int i = 0;
 		while(!bagQue.isEmpty()){
 			int bag = bagQue.poll();
-			while(i < N && arr[i][0] <= bag){
-				valueQue.add(arr[i++][1]);
+			while(!jewelQue.isEmpty() && jewelQue.peek()[0] <= bag){
+				valueQue.add(jewelQue.poll()[1]);
 			}
 			if(!valueQue.isEmpty()){
 				result += valueQue.poll();
@@ -34,13 +33,10 @@ public class Main{
 		N = Integer.parseInt(line[0]);
 		K = Integer.parseInt(line[1]);
 
-		arr = new int[N][2];
 		for(int i = 0 ; i < N; i++){
 			line = br.readLine().split(" ");
-			arr[i][0] = Integer.parseInt(line[0]);
-			arr[i][1] = Integer.parseInt(line[1]);
+			jewelQue.add(new int[]{Integer.parseInt(line[0]), Integer.parseInt(line[1])});
 		}
-		Arrays.sort(arr, Comparator.comparingInt(a -> a[0]));
 
 		for(int i = 0; i < K; i++){
 			bagQue.add(Integer.parseInt(br.readLine()));
