@@ -12,7 +12,7 @@ public class Main{
 	}
 
 	private static long solution(List<int[]>[] map){
-		Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingLong(a->(long)a[2] * M + a[1]));
+		Queue<int[]> pq = new PriorityQueue<>(Comparator.comparingLong(a->calSpentTime(a[1], a[2])));
 		pq.add(new int[]{ 1, 0, 0 });
 		long[] updatedArr = new long[N + 1];
 		Arrays.fill(updatedArr, Long.MAX_VALUE);
@@ -28,19 +28,20 @@ public class Main{
 				}
 
 				for(int[] cw : map[info[0]]){
-					long tst = calSpentTime(cw[1] + 1, info[2]);
+					int next = cw[1] + 1;
+					long tst = calSpentTime(next, info[2]);
 					if(updatedArr[cw[0]] > tst && cw[1] >= info[1]){
-						pq.add(new int[]{cw[0], cw[1] + 1, info[2]});
+						pq.add(new int[]{cw[0], next, info[2]});
 						updatedArr[cw[0]] = tst;
 					}else if(updatedArr[cw[0]] > tst + M){
-						pq.add(new int[]{cw[0], cw[1] + 1, info[2] + 1});
+						pq.add(new int[]{cw[0], next, info[2] + 1});
 						updatedArr[cw[0]] = tst + M;
 					}
 				}
 			}
 		}
 
-		return -1;
+		return 0;
 	}
 
 	private static long calSpentTime(int time, int cycle){
