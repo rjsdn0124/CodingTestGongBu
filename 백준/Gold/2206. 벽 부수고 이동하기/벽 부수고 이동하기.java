@@ -3,9 +3,6 @@ import java.util.*;
 
 public class Main{
 	private static int N, M;
-	private static int[] dx = {1, 0, -1, 0};
-	private static int[] dy = {0, 1, 0, -1};
-	private static final int VACANT = 0, WALL = 1, NOWALL = 2;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,6 +12,8 @@ public class Main{
 	}
 
 	private static int solution(boolean[][] arr){
+		int[] dx = {1, 0, -1, 0};
+		int[] dy = {0, 1, 0, -1};
 		int[][] visited = new int[N][M];
 		Queue<Location> q = new LinkedList<>();
 		q.add(new Location(0, 0, 1, false));
@@ -34,23 +33,23 @@ public class Main{
 				if(0 <= nx && nx < M && 0 <= ny && ny < N){
 					if(arr[ny][nx]){
 						// 벽이 아닐 때
-						if(visited[ny][nx] == VACANT){
+						if(visited[ny][nx] == 0){
 							// 내가 처음 온거니까 무조건 넣어
 							q.add(new Location(nx, ny, loc.count + 1, loc.isPassedWall));
-							visited[ny][nx] = loc.isPassedWall ? WALL : NOWALL;
-						}else if(visited[ny][nx] == WALL && !loc.isPassedWall){
+							visited[ny][nx] = loc.isPassedWall ? 1 : 2;
+						}else if(visited[ny][nx] == 1 && !loc.isPassedWall){
 							// visited에 먼저 벽 지난 친구가 있다면 벽을 안 지난 친구면 들어가
 							q.add(new Location(nx, ny, loc.count + 1, false));
-							visited[ny][nx] = NOWALL;
+							visited[ny][nx] = 2;
 						}
 						// 내가 벽 지나왔다면 x
 						// 이미 벽을 하나도 안 거친 객체가 있으면 x
 					}else{
 						// 벽일 때
-						if(!loc.isPassedWall && visited[ny][nx] == VACANT){
+						if(!loc.isPassedWall && visited[ny][nx] == 0){
 							// 벽을 안 지나왔으면 visited 이미 없으면 o하고 isPassedWall 업데이트
 							q.add(new Location(nx, ny, loc.count + 1, true));
-							visited[ny][nx] = WALL;
+							visited[ny][nx] = 1;
 						}
 						// 이미 벽을 지나왔으면 x
 					}
