@@ -16,17 +16,15 @@ public class Main{
 
 	private static long solution(){
 		long result = 0;
-		int bag;
 		int i = 0;
 		while(!bagQue.isEmpty()){
-			bag = bagQue.poll();
+			int bag = bagQue.poll();
 			while(i < N && arr[i][0] <= bag){
 				valueQue.add(arr[i++][1]);
 			}
-			if(valueQue.isEmpty()){
-				continue;
+			if(!valueQue.isEmpty()){
+				result += valueQue.poll();
 			}
-			result += valueQue.poll();
 		}
 		return result;
 	}
