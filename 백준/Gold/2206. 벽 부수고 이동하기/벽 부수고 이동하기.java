@@ -5,7 +5,7 @@ public class Main{
 	private static int N, M;
 	private static int[] dx = {1, 0, -1, 0};
 	private static int[] dy = {0, 1, 0, -1};
-	private static final int VACANT = 0, WALL = 1, NOWALL=2;
+	private static final int VACANT = 0, WALL = 1, NOWALL = 2;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,16 +22,14 @@ public class Main{
 
 		while(!q.isEmpty()){
 			Location loc = q.poll();
-			int x = loc.x;
-			int y = loc.y;
 
-			if(x == M - 1 && y == N - 1){
+			if(loc.x == M - 1 && loc.y == N - 1){
 				return loc.count;
 			}
 
 			for(int i = 0; i < 4; i++){
-				int nx = x + dx[i];
-				int ny = y + dy[i];
+				int nx = loc.x + dx[i];
+				int ny = loc.y + dy[i];
 
 				if(0 <= nx && nx < M && 0 <= ny && ny < N){
 					if(arr[ny][nx]){
