@@ -19,18 +19,20 @@ public class Main{
 			String[] line = br.readLine().split(" ");
 			int[] students = new int[studentCount];
 			boolean[] visited = new boolean[studentCount];
+			int[] visi = new int[studentCount];
 			int totalTeamMateCount = 0;
+
 			for (int i = 0; i < studentCount; i++) {
 				students[i] = Integer.parseInt(line[i]) - 1;
 				if(i == students[i]){
 					totalTeamMateCount++;
-					visited[i] = true;
+					visi[i] = -1;
 				}
 			}
 
 			for(int i = 0; i < studentCount; i++){
-				if(!visited[i]) {
-					totalTeamMateCount += createTeam(visited, students, i);
+				if(visi[i] == 0) {
+					totalTeamMateCount += createTeam(visi, students, i, 1);
 				}
 			}
 
@@ -40,16 +42,16 @@ public class Main{
 		return sb;
 	}
 
-	private static int createTeam(boolean[] visited, int[] students, int ind){
-		int result = 0;
-		Map<Integer, Integer> map = new HashMap<>();
-
-		while(!visited[ind]){
-			map.put(ind, ++result);
-			visited[ind] = true;
-			ind = students[ind];
+	private static int createTeam(int[] visited, int[] students, int ind, int result){
+		if(visited[ind] > 0){
+			return result - visited[ind];
+		}else if(visited[ind] == 0){
+			visited[ind] = result++;
+			result = createTeam(visited, students, students[ind], result);
+			visited[ind] = -1;
+			return result;
+		}else{
+			return 0;
 		}
-
-		return map.containsKey(ind) ? result - map.get(ind) + 1 : 0;
 	}
 }
