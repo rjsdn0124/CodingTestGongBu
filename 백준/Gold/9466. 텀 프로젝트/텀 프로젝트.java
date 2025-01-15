@@ -21,13 +21,17 @@ public class Main{
 			students = new int[studentCount];
 			visited = new int[studentCount];
 
-			for (int i = 0; i < studentCount; i++) {
+			for (int i = 0; i < students.length; i++) {
 				students[i] = Integer.parseInt(line[i]) - 1;
+				if(i == students[i]) {
+					studentCount--;
+					visited[i] = -1;
+				}
 			}
 
 			for(int i = 0; i < students.length; i++){
 				if(visited[i] == 0) {
-					studentCount -= createTeam(i, 0);
+					studentCount -= createTeam(i, 1);
 				}
 			}
 
@@ -38,9 +42,9 @@ public class Main{
 	}
 
 	private static int createTeam(int ind, int result){
-		visited[ind] = ++result;
 		if(visited[students[ind]] == 0) {
-			result = createTeam(students[ind], result);
+			visited[ind] = result;
+			result = createTeam(students[ind], ++result);
 		}else if(visited[students[ind]] > 0){
 			result -= visited[students[ind]] - 1;
 		}else{
