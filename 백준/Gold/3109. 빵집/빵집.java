@@ -23,8 +23,9 @@ public class Main{
 	}
 
 	private static boolean dfs(int x, int y){
-		if(++x == M) return true;
-		y--;
+		x+=1;
+		if(x == M) return true;
+		y-=1;
 		for(int i = 0; i < 3; i++){
 			if(arr[y][x]){
 				arr[y][x] = false;
@@ -32,7 +33,7 @@ public class Main{
 					return true;
 				}
 			}
-			y++;
+			y+=1;
 		}
 		return false;
 	}
