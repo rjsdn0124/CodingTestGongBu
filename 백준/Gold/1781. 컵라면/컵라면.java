@@ -30,13 +30,11 @@ public class Main{
 	}
 
 	private static int find(int dl){
-		if(dlSet[dl] == dl){
-			if(dl == 0) return 0;
-			dlSet[dl]--;
-			return dl;
+		if(dl == 0) return 0;
+		else if(dlSet[dl] == dl){
+			return dlSet[dl]--;
 		}
-		dlSet[dl] = find(dlSet[dl]);
-		return dlSet[dl];
+		return dlSet[dl] = find(dlSet[dl]);
 	}
 
 	private static void getInput(BufferedReader br) throws IOException{
