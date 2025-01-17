@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Main{
 	private static int N, dest, oil;
-	private static int[][] arr;
+	private static Node[] arr;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,8 +18,8 @@ public class Main{
 		int ind = 0;
 		Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a));
 		while(oil < dest){
-			while(ind < N && arr[ind][0] <= oil) {
-				pq.add(arr[ind++][1]);
+			while(ind < N && arr[ind].loc <= oil) {
+				pq.add(arr[ind++].oil);
 			}
 			if(pq.isEmpty()){
 				return -1;
@@ -34,17 +34,26 @@ public class Main{
 	private static void getInput(BufferedReader br) throws IOException{
 		N = Integer.parseInt(br.readLine());
 		String[] line;
-		arr = new int[N][2];
+		arr = new Node[N];
 
 		for(int i = 0; i < N; i++){
 			line = br.readLine().split(" ");
-			arr[i] = new int[]{Integer.parseInt(line[0]), Integer.parseInt(line[1])};
+			arr[i] = new Node(Integer.parseInt(line[0]), Integer.parseInt(line[1]));
 		}
 
-		Arrays.sort(arr, Comparator.comparingInt(a -> a[0]));
+		Arrays.sort(arr, Comparator.comparingInt(a -> a.loc));
 
 		line = br.readLine().split(" ");
 		dest = Integer.parseInt(line[0]);
 		oil = Integer.parseInt(line[1]);
+	}
+}
+
+class Node{
+	int loc, oil;
+
+	public Node(int loc, int oil){
+		this.loc = loc;
+		this.oil = oil;
 	}
 }
