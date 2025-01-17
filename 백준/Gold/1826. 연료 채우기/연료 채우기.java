@@ -16,7 +16,12 @@ public class Main{
 	private static int solution(){
 		int result = 0;
 		int ind = 0;
-		Queue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(a -> -a));
+		Queue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>(){
+			@Override
+			public int compare(Integer a, Integer b){
+				return b - a;
+			}
+		});
 		while(oil < dest){
 			while(ind < N && arr[ind].loc <= oil) {
 				pq.add(arr[ind++].oil);
