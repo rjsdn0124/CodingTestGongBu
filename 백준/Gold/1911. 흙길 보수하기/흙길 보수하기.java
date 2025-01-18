@@ -40,11 +40,6 @@ public class Main{
 			arr[i] = new int[]{Integer.parseInt(line[0]), Integer.parseInt(line[1])};
 		}
 
-		Arrays.sort(arr, new Comparator<int[]>(){
-			@Override
-			public int compare(int[] a, int[] b){
-				return a[1] - b[1];
-			}
-		});
+		Arrays.sort(arr, (a, b) -> a[0] - b[0]);
 	}
 }
