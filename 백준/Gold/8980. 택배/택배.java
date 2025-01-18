@@ -36,7 +36,7 @@ public class Main{
 		int postCount = 0;
 		for(int[] req: reqs){
 			int tempPost = req[1];
-			for(int i = req[0]; i < now; i++){
+			for(int i = req[0]; i < now && tempPost > 0; i++){
 				tempPost = Math.min(tempPost, maxPost[i]);
 				maxPost[i] -= tempPost;
 			}
@@ -50,10 +50,10 @@ public class Main{
 		N = Integer.parseInt(line[0]);
 		M = Integer.parseInt(line[1]);
 		int reqs = Integer.parseInt(br.readLine());
-		arr = new LinkedList[N + 1];
+		arr = new ArrayList[N + 1];
 
 		for(int i = 1; i <= N; i++){
-			arr[i] = new LinkedList<>();
+			arr[i] = new ArrayList<>();
 		}
 		for(int i = 0; i < reqs; i++){
 			line = br.readLine().split(" ");
