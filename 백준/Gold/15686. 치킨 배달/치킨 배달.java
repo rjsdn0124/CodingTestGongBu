@@ -5,6 +5,7 @@ public class Main{
 	private static int N, M, result = Integer.MAX_VALUE;
 	private static List<int[]> houses;
 	private static List<int[]> chickens;
+	private static int[] selected;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,11 +16,11 @@ public class Main{
 	}
 
 	private static void solution(){
-		int[] chickenDist = new int[M];
-		dfs(0, 0, chickenDist);
+		selected = new int[M];
+		dfs(0, 0);
 	}
 
-	private static void dfs(int ind, int depth, int[] selected){
+	private static void dfs(int ind, int depth){
 		// M까지 치킨집 선택하기.
 		if(depth == M) {
 			// M에 도달하면 결과 갱신.
@@ -36,7 +37,7 @@ public class Main{
 		}
 		for(int i = ind; i < chickens.size() - M + depth + 1; i++){
 			selected[depth] = i;
-			dfs(i + 1, depth + 1, selected);
+			dfs(i + 1, depth + 1);
 		}
 	}
 
