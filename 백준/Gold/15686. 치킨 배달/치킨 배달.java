@@ -36,9 +36,11 @@ public class Main{
 			result = Math.min(result, sum);
 			return;
 		}
-		for(int i = ind; i < cCount + depth + 1; i++){
-			selected[depth] = i;
-			dfs(i + 1, depth + 1);
+
+		depth++;
+		for(int i = ind; i < cCount + depth; i++){
+			selected[depth - 1] = i;
+			dfs(i + 1, depth);
 		}
 	}
 
