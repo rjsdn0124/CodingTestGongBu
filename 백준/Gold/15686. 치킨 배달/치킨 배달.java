@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Main{
-	private static int N, M, result = Integer.MAX_VALUE;
-	private static List<int[]> houses;
-	private static List<int[]> chickens;
+	private static int N, M, hCount, cCount, result = Integer.MAX_VALUE;
+	private static int[][] houses;
+	private static int[][] chickens;
 	private static int[] selected;
 
 	public static void main(String[] args) throws IOException{
@@ -17,6 +17,7 @@ public class Main{
 
 	private static void solution(){
 		selected = new int[M];
+		cCount -= M;
 		dfs(0, 0);
 	}
 
@@ -25,17 +26,17 @@ public class Main{
 		if(depth == M) {
 			// M에 도달하면 결과 갱신.
 			int sum = 0;
-			for (int i = 0; i < houses.size(); i++) {
+			for (int i = 0; i < hCount; i++) {
 				int chickenDist = Integer.MAX_VALUE;
 				for(int sc: selected) {
-					chickenDist = Math.min(chickenDist, calChickenDist(chickens.get(sc), houses.get(i)));
+					chickenDist = Math.min(chickenDist, calChickenDist(chickens[sc], houses[i]));
 				}
 				sum += chickenDist;
 			}
 			result = Math.min(result, sum);
 			return;
 		}
-		for(int i = ind; i < chickens.size() - M + depth + 1; i++){
+		for(int i = ind; i < cCount + depth + 1; i++){
 			selected[depth] = i;
 			dfs(i + 1, depth + 1);
 		}
@@ -50,16 +51,16 @@ public class Main{
 		N = Integer.parseInt(line[0]);
 		M = Integer.parseInt(line[1]);
 
-		houses = new ArrayList<>();
-		chickens = new ArrayList<>();
+		houses = new int[N * 2][2];
+		chickens = new int[13][2];
 
 		for(int i = 0; i < N; i++) {
 			line = br.readLine().split(" ");
 			for (int j = 0; j < N; j++) {
 				if (line[j].equals("1")) {
-					houses.add(new int[] {j, i});
+					houses[hCount++] = new int[] {j, i};
 				}else if(line[j].equals("2")){
-					chickens.add(new int[] {j, i});
+					chickens[cCount++] = new int[] {j, i};
 				}
 			}
 		}
