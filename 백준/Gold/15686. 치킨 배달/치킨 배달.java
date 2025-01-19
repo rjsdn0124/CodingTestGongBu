@@ -6,6 +6,7 @@ public class Main{
 	private static int[][] houses;
 	private static int[][] chickens;
 	private static int[] selected;
+	private static int[][] chickenDists;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,7 +17,7 @@ public class Main{
 	}
 
 	private static void solution(){
-		selected = new int[M];
+		getChickenDists();
 		cCount -= M;
 		dfs(0, 0);
 	}
@@ -29,7 +30,7 @@ public class Main{
 			for (int i = 0; i < hCount; i++) {
 				int chickenDist = Integer.MAX_VALUE;
 				for(int sc: selected) {
-					chickenDist = Math.min(chickenDist, calChickenDist(chickens[sc], houses[i]));
+					chickenDist = Math.min(chickenDist, chickenDists[sc][i]);
 				}
 				sum += chickenDist;
 			}
@@ -44,6 +45,15 @@ public class Main{
 		}
 	}
 
+	private static void getChickenDists(){
+		chickenDists = new int[cCount][hCount];
+		for(int i = 0; i < cCount; i++){
+			for(int j = 0; j < hCount; j++){
+				chickenDists[i][j] = calChickenDist(chickens[i], houses[j]);
+			}
+		}
+	}
+
 	private static int calChickenDist(int[] chicken, int[] house){
 		return Math.abs(chicken[0] - house[0]) + Math.abs(chicken[1] - house[1]);
 	}
@@ -55,6 +65,7 @@ public class Main{
 
 		houses = new int[N * 2][2];
 		chickens = new int[13][2];
+		selected = new int[M];
 
 		for(int i = 0; i < N; i++) {
 			line = br.readLine().split(" ");
