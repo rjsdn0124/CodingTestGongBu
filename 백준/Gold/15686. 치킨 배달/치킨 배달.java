@@ -15,31 +15,28 @@ public class Main{
 	}
 
 	private static void solution(){
-		int[] chickenDist = new int[houses.size()];
-		Arrays.fill(chickenDist, Integer.MAX_VALUE);
+		int[] chickenDist = new int[M];
 		dfs(0, 0, chickenDist);
 	}
 
-	private static void dfs(int ind, int depth, int[] chickenDist){
+	private static void dfs(int ind, int depth, int[] selected){
 		// M까지 치킨집 선택하기.
 		if(depth == M) {
 			// M에 도달하면 결과 갱신.
 			int sum = 0;
-			for(int i = 0; i < chickenDist.length; i++){
-				sum += chickenDist[i];
+			for (int i = 0; i < houses.size(); i++) {
+				int chickenDist = Integer.MAX_VALUE;
+				for(int sc: selected) {
+					chickenDist = Math.min(chickenDist, calChickenDist(chickens.get(sc), houses.get(i)));
+				}
+				sum += chickenDist;
 			}
 			result = Math.min(result, sum);
 			return;
 		}
-		depth++;
-		for(int i = ind; i < chickens.size() - M + depth; i++){
-			int[] newCD = new int[chickenDist.length];
-			// 과정 중 선택된 치킨집과 집과의 치킨 거리 갱신.
-			int[] chicken = chickens.get(i);
-			for(int j = 0; j < chickenDist.length; j++){
-				newCD[j] = Math.min(chickenDist[j], calChickenDist(chicken, houses.get(j)));
-			}
-			dfs(i, depth, newCD);
+		for(int i = ind; i < chickens.size() - M + depth + 1; i++){
+			selected[depth] = i;
+			dfs(i + 1, depth + 1, selected);
 		}
 	}
 
