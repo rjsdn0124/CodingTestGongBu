@@ -15,8 +15,6 @@ public class Main{
 	}
 
 	private static void solution(){
-		int result = 0;
-
 		// 완전탐색.
 		// 노트북 우선 위부터 아래로 완탐. 모든 스티커를 붙일 때마다 해주어야할듯.
 		for(boolean[][] sticker : stickers) {
