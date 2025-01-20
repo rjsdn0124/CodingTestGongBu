@@ -34,10 +34,9 @@ public class Main{
 					}
 				}
 			}
-			if(isChained) result++;
-			if(!gravity()){
-				break;
-			}
+			if(!isChained) break;
+			gravity();
+			result++;
 		}
 		return result;
 	}
@@ -68,21 +67,18 @@ public class Main{
 		}
 	}
 
-	private static boolean gravity(){
+	private static void gravity(){
 		boolean isUpdated = false;
 
 		for(int i = 0; i < X; i++){
 			int newInd = 0;
 			for(int j = 0; j < arrMeta[i]; j++){
 				if(arr[j][i] > 0){
-					isUpdated |= newInd != j;
 					arr[newInd++][i] = arr[j][i];
 				}
 			}
 			arrMeta[i] = newInd;
 		}
-
-		return isUpdated;
 	}
 	private static void getInput(BufferedReader br) throws IOException {
 		arr = new int[Y][X];
