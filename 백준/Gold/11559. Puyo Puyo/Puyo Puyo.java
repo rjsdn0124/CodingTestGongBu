@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main{
-	private static int Y = 12, X  = 6;
+	private static final int Y = 12, X  = 6;
 	private static int[][] arr;
 	private static int[] arrMeta;
 	private static int[] dx = {1, 0, -1, 0};
@@ -12,17 +12,14 @@ public class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		getInput(br);
-		int result = solution();
-		System.out.println(result);
+		System.out.println(solution());
 	}
 
 	private static int solution(){
 		int result = 0;
-		// list에 갱신된 가장 아래 좌표 넣기. 옛날에도 안 터진 친구들은 영영 안 터질 친구들일거기 때문에 체크 안하기.
 		boolean[][] visited;
 
 		while(true){
-			boolean isChained = false;
 			visited = new boolean[Y][X];
 			// 좌표들 dfs돌면서 같은 색 친구들 찾기.
 			for(int j = 0; j < X; j++){
@@ -30,15 +27,12 @@ public class Main{
 					if (!visited[i][j] && dfs(j, i, visited) >= 4) {
 						// 찾는다면 해당 칸 비워주기.
 						updateDfs(j, i, arr[i][j]);
-						isChained = true;
 					}
 				}
 			}
-			if(!isChained) break;
-			gravity();
+			if(!gravity()) return result;
 			result++;
 		}
-		return result;
 	}
 
 	private static int dfs(int x, int y, boolean[][] visited){
@@ -67,9 +61,8 @@ public class Main{
 		}
 	}
 
-	private static void gravity(){
+	private static boolean gravity(){
 		boolean isUpdated = false;
-
 		for(int i = 0; i < X; i++){
 			int newInd = 0;
 			for(int j = 0; j < arrMeta[i]; j++){
@@ -77,9 +70,12 @@ public class Main{
 					arr[newInd++][i] = arr[j][i];
 				}
 			}
+			isUpdated |= newInd != arrMeta[i];
 			arrMeta[i] = newInd;
 		}
+		return isUpdated;
 	}
+
 	private static void getInput(BufferedReader br) throws IOException {
 		arr = new int[Y][X];
 		arrMeta = new int[X];
