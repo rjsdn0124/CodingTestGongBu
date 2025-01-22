@@ -3,13 +3,12 @@ import java.util.*;
 
 public class Main{
 	private static int N = 5;
-	private static boolean[][][] arr = new boolean[N][N][N];
+	private static boolean[][][][] arr = new boolean[N][4][N][N];
 	private static boolean[][][] updatedArr = new boolean[N][N][N];
 	private static int result = Integer.MAX_VALUE;
 	private static boolean canMake = false;
 	private static boolean[] plateVisited = new boolean[N];
 	private static int[][] dxyz = {{1,0,0}, {-1,0,0}, {0,1,0}, {0,-1,0}, {0,0,1}, {0,0,-1}};
-	private static int[][] startPoints = {{0,0}, {4,0}, {0,4}, {4,4}};
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,43 +20,31 @@ public class Main{
 
 	private static void solution(int zInd){
 		if(zInd == 5){
-			turnPlateCases(0);
+			if(updatedArr[0][0][0]){
+				bfs(0, 0);
+			}
 			return;
 		}
 		for(int i = 0; i < N; i++){
 			if(!plateVisited[i]){
-				updatedArr[zInd] = arr[i];
 				plateVisited[i] = true;
-				solution(zInd + 1);
+				for(int j = 0; j < 4; j++){
+					updatedArr[zInd] = arr[i][j];
+					solution(zInd + 1);
+				}
 				plateVisited[i] = false;
 			}
 		}
 	}
 
-	private static void turnPlateCases(int zind){
-		if(zind == 5){
-			for(int i = 0; i < 4; i++){
-				if(updatedArr[0][startPoints[i][1]][startPoints[i][0]]){
-					bfs(startPoints[i][0], startPoints[i][1]);
-				}
-			}
-			return;
-		}
-
-		for(int i = 0; i < 4; i++){
-			turnPlateCases(zind + 1);
-			turnPlate(zind);
-		}
-	}
-
-	private static void turnPlate(int ind){
+	private static void turnPlate(int ind, int tc){
 		boolean[][] newArr = new boolean[N][N];
 		for(int i = 0; i < N; i++) {
 			for(int j = 0; j < N; j++) {
-				newArr[4 - j][i] = updatedArr[ind][i][j];
+				newArr[4 - j][i] = arr[ind][tc][i][j];
 			}
 		}
-		updatedArr[ind] = newArr;
+		arr[ind][tc+1] = newArr;
 	}
 
 	private static void bfs(int x, int y){
@@ -104,7 +91,10 @@ public class Main{
 			for(int j = 0; j < N; j++){
 				String[] l = br.readLine().split(" ");
 				for(int k = 0; k < N; k++){
-					arr[i][j][k] = l[k].equals("1");
+					arr[i][0][j][k] = l[k].equals("1");
+					for(int m = 0; m < 3; m++){
+						turnPlate(i, m);
+					}
 				}
 			}
 		}
