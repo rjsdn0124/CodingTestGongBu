@@ -1,8 +1,8 @@
 import java.io.*;
-import java.util.*;
 
 public class Main{
 	private static int N, M;
+	private static int[] arr;
 	private static StringBuilder sb = new StringBuilder();
 
 	public static void main(String[] args) throws IOException{
@@ -14,21 +14,21 @@ public class Main{
 	}
 
 	private static void solution(){
-		dfs(1, 0, new int[M]);
+		dfs(1, 0);
 	}
 
-	private static void dfs(int ind, int depth, int[] visited){
+	private static void dfs(int ind, int depth){
 		if(depth == M){
 			for(int i = 0; i < M; i++){
-				sb.append(visited[i]).append(" ");
+				sb.append(arr[i]).append(" ");
 			}
 			sb.append("\n");
 			return;
 		}
 
 		for(int i = ind; i <= N - M + depth + 1; i++){
-			visited[depth] = i;
-			dfs(i + 1, depth + 1, visited);
+			arr[depth] = i;
+			dfs(i + 1, depth + 1);
 		}
 	}
 
@@ -36,5 +36,6 @@ public class Main{
 		String[] l = br.readLine().split(" ");
 		N = Integer.parseInt(l[0]);
 		M = Integer.parseInt(l[1]);
+		arr = new int[M];
 	}
 }
