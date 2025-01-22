@@ -13,7 +13,7 @@ public class Main{
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		getInput(br);
+		init(br);
 		solution(0);
 		System.out.print(canMake ? result : -1);
 	}
@@ -21,7 +21,7 @@ public class Main{
 	private static void solution(int zInd){
 		if(zInd == 5){
 			if(updatedArr[0][0][0]){
-				bfs(0, 0);
+				bfs();
 			}
 			return;
 		}
@@ -38,26 +38,24 @@ public class Main{
 	}
 
 	private static void turnPlate(int ind, int tc){
-		boolean[][] newArr = new boolean[N][N];
 		for(int i = 0; i < N; i++) {
 			for(int j = 0; j < N; j++) {
-				newArr[4 - j][i] = arr[ind][tc][i][j];
+				arr[ind][tc+1][4 - j][i] = arr[ind][tc][i][j];
 			}
 		}
-		arr[ind][tc+1] = newArr;
 	}
 
-	private static void bfs(int x, int y){
-		int epx = N - 1 - x;
-		int epy = N - 1 - y;
+	private static void bfs(){
+		int epx = N - 1;
+		int epy = N - 1;
 		int epz = N - 1;
 
 		if(updatedArr[epz][epy][epx]){
 			Queue<int[]> q = new LinkedList<>();
-			q.add(new int[] {x, y, 0, 0});
+			q.add(new int[] {0, 0, 0, 0});
 
 			boolean[][][] visited = new boolean[N][N][N];
-			visited[0][y][x] = true;
+			visited[0][0][0] = true;
 
 			while(!q.isEmpty()){
 				int[] xyzc = q.poll();
@@ -85,8 +83,7 @@ public class Main{
 		return 0 <= c && c < N;
 	}
 
-
-	private static void getInput(BufferedReader br) throws IOException {
+	private static void init(BufferedReader br) throws IOException {
 		for(int i = 0; i < N; i++){
 			for(int j = 0; j < N; j++){
 				String[] l = br.readLine().split(" ");
