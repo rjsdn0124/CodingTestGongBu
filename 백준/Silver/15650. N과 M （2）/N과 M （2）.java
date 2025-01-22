@@ -14,24 +14,21 @@ public class Main{
 	}
 
 	private static void solution(){
-		dfs(1, 0, new boolean[N + 1]);
+		dfs(1, 0, new int[M]);
 	}
 
-	private static void dfs(int ind, int depth, boolean[] visited){
+	private static void dfs(int ind, int depth, int[] visited){
 		if(depth == M){
-			for(int i = 1; i <= N; i++){
-				if(visited[i]) {
-					sb.append(i).append(" ");
-				}
+			for(int i = 0; i < M; i++){
+				sb.append(visited[i]).append(" ");
 			}
 			sb.append("\n");
 			return;
 		}
 
 		for(int i = ind; i <= N - M + depth + 1; i++){
-			visited[i] = true;
+			visited[depth] = i;
 			dfs(i + 1, depth + 1, visited);
-			visited[i] = false;
 		}
 	}
 
