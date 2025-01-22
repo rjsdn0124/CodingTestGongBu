@@ -20,9 +20,7 @@ public class Main{
 
 	private static void solution(int zInd){
 		if(zInd == 5){
-			if(updatedArr[0][0][0]){
-				bfs();
-			}
+			bfs();
 			return;
 		}
 		for(int i = 0; i < N; i++){
@@ -30,6 +28,9 @@ public class Main{
 				plateVisited[i] = true;
 				for(int j = 0; j < 4; j++){
 					updatedArr[zInd] = arr[i][j];
+					if(zInd == 0 && !updatedArr[0][0][0]) {
+						continue;
+					}
 					solution(zInd + 1);
 				}
 				plateVisited[i] = false;
@@ -38,11 +39,13 @@ public class Main{
 	}
 
 	private static void turnPlate(int ind, int tc){
+		boolean[][] newArr = new boolean[N][N];
 		for(int i = 0; i < N; i++) {
 			for(int j = 0; j < N; j++) {
-				arr[ind][tc+1][4 - j][i] = arr[ind][tc][i][j];
+				newArr[4 - j][i] = arr[ind][tc][i][j];
 			}
 		}
+		arr[ind][tc+1] = newArr;
 	}
 
 	private static void bfs(){
@@ -63,6 +66,10 @@ public class Main{
 				if(xyzc[0] == epx && xyzc[1] == epy && xyzc[2] == epz){
 					result = Math.min(result, xyzc[3]);
 					canMake = true;
+					if(result == 12){
+						System.out.println(result);
+						System.exit(0);
+					}
 					return;
 				}
 
