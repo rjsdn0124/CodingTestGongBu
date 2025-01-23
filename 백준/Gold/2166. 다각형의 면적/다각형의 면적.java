@@ -10,13 +10,13 @@ public class Main{
 
 		init(br);
 		solution();
-		System.out.printf("%.1f", Math.abs(result / 2));
+		System.out.printf("%.1f", Math.abs(result));
 	}
 
 	private static void solution(){
 		for(int i = 0; i < N; i++){
-			result += (double) arr[i + 1][0] * arr[i][1];
-			result -= (double) arr[i][0] * arr[i + 1][1];
+			result += 0.5 * arr[i + 1][0] * arr[i][1];
+			result -= 0.5 * arr[i][0] * arr[i + 1][1];
 		}
 	}
 
