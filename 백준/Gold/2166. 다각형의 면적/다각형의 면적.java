@@ -9,15 +9,16 @@ public class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		init(br);
-		solution();
-		System.out.printf("%.1f", Math.abs(result));
+		System.out.printf("%.1f", solution());
 	}
 
-	private static void solution(){
+	private static double solution(){
+		double result = 0;
 		for(int i = 0; i < N; i++){
 			result += 0.5 * arr[i + 1][0] * arr[i][1];
 			result -= 0.5 * arr[i][0] * arr[i + 1][1];
 		}
+		return Math.abs(result);
 	}
 
 	private static void init(BufferedReader br) throws IOException {
