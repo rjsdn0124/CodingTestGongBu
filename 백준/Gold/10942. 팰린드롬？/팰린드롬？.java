@@ -35,8 +35,8 @@ public class Main{
 				}else {
 					prevResult = false;
 				}
-				end++;
 				start--;
+				end++;
 			}
 		}
 
