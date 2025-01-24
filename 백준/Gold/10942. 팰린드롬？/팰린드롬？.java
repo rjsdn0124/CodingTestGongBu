@@ -25,25 +25,28 @@ public class Main{
 	}
 
 	private static void findDp(){
+		int start;
+		int end;
+		boolean prevResult;
 		for(int i = 0; i < N; i++){
-			int start = i;
-			int end = i;
-			boolean prevResult = true;
+			start = i;
+			end = i;
+			prevResult = true;
 			while(start >= 0 && end < N){
 				if(arr[start] == arr[end]){
 					dp[start][end] = prevResult;
 				}else {
 					prevResult = false;
 				}
-				start--;
 				end++;
+				start--;
 			}
 		}
 
 		for(int i = 0; i < N - 1; i++){
-			int start = i;
-			int end = i + 1;
-			boolean prevResult = true;
+			start = i;
+			end = i + 1;
+			prevResult = true;
 			while(start >= 0 && end < N){
 				if(arr[start] == arr[end]){
 					dp[start][end] = prevResult;
@@ -61,6 +64,7 @@ public class Main{
 			sb.append(dp[s[i]][e[i]] ? 1 : 0).append("\n");
 		}
 	}
+
 	private static void init(BufferedReader br) throws IOException {
 		N = Integer.parseInt(br.readLine());
 		arr = new int[N];
