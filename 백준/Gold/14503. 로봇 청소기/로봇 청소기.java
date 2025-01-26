@@ -23,17 +23,10 @@ public class Main{
 				result++;
 				visited[r][c] = true;
 			}
-			boolean canGoFront = false;
 			// 청소 후 돌아보기.
-			for(int i = 0; i < 4; i++) {
-				// 	있으면 이동
-				if(rotateAndCheck()){
-					canGoFront = true;
-					break;
-				}
-			}
+			// 	있으면 이동
 			// 	없으면 후진
-			if(!canGoFront && !canGoBack()){
+			if(!rotateAndCheck() && !canGoBack()){
 				break;
 			}
 			// 반복
@@ -41,13 +34,15 @@ public class Main{
 	}
 
 	private static boolean rotateAndCheck(){
-		d = (d + 3) % 4;
-		int nr = r + dr[d];
-		int nc = c + dc[d];
-		if(0 <= nc && nc < M && 0 <= nr && nr < N && !visited[nr][nc] && arr[nr][nc]){
-			r = nr;
-			c = nc;
-			return true;
+		for(int i = 0; i < 4; i++) {
+			d = (d + 3) % 4;
+			int nr = r + dr[d];
+			int nc = c + dc[d];
+			if (0 <= nc && nc < M && 0 <= nr && nr < N && !visited[nr][nc] && arr[nr][nc]) {
+				r = nr;
+				c = nc;
+				return true;
+			}
 		}
 		return false;
 	}
