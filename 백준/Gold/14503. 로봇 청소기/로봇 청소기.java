@@ -49,14 +49,9 @@ public class Main{
 
 	private static boolean canGoBack(){
 		int td = (d + 2) % 4;
-		int nr = r + dr[td];
-		int nc = c + dc[td];
-		if(0 <= nc && nc < M && 0 <= nr && nr < N && arr[nr][nc]){
-			r = nr;
-			c = nc;
-			return true;
-		}
-		return false;
+		r += dr[td];
+		c += dc[td];
+		return 0 <= c && c < M && 0 <= r && r < N && arr[r][c];
 	}
 
 	private static void init(BufferedReader br) throws IOException {
