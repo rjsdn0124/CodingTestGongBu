@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class Main{
-	private static int N, x = 0, y = 0, tailX = 0, tailY = 0, turn = 0, direction = 0, reqInd = 0;
+	private static int N, x = 0, y = 0, tailX = 0, tailY = 0, turn = 0, direction = 0;
 	private static boolean[][] arr;
 	private static int[][] snake;
 	private static int[][] reqs;
@@ -19,10 +19,8 @@ public class Main{
 	private static void solution(){
 		for(int[] req: reqs) {
 			while(turn < req[0]) {
-				snake[y][x] = direction + 1;
 				// 이동
 				moveHead();
-				turn++;
 				if (0 > x || x >= N || 0 > y || y >= N || snake[y][x] > 0) {
 					return;
 				}
@@ -37,8 +35,10 @@ public class Main{
 	}
 
 	private static void moveHead(){
+		snake[y][x] = direction + 1;
 		x += dx[direction];
 		y += dy[direction];
+		turn++;
 	}
 
 	private static void updateDirection(int[] req){
