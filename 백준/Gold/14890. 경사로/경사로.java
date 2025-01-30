@@ -2,7 +2,7 @@ import java.io.*;
 
 public class Main{
 	private static int N, L, result = 0;
-	private static int[][] arr;
+	private static int[][] arr, rotatedArr;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,7 +13,6 @@ public class Main{
 	}
 
 	private static void solution(){
-		int[][] rotatedArr = new int[N][N];
 		for(int i = 0; i < N; i++){
 			for(int j = 0; j < N; j++){
 				rotatedArr[i][j] = arr[j][i];
@@ -67,11 +66,13 @@ public class Main{
 		L = Integer.parseInt(line[1]);
 
 		arr = new int[N][N];
+		rotatedArr = new int[N][N];
 
 		for(int i = 0; i < N; i++) {
 			String[] l = br.readLine().split(" ");
 			for(int j = 0; j < N; j++) {
 				arr[i][j] = Integer.parseInt(l[j]);
+				rotatedArr[j][i] = arr[i][j];
 			}
 		}
 	}
