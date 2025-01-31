@@ -50,27 +50,22 @@ public class Main{
 	}
 
 	private static boolean move(int direction){
-		boolean isMoved = false;
 		// x축 y축 둘 중 하나가 같은 위치일 때 먼저 도착하는 애 있으면 그만하기
 		if(direction % 2 == 0){
 			boolean isRedBig = (blue[0] < red[0] && direction == 0) || (blue[0] > red[0] && direction == 2);
 			int holeToBall = blue[0] - hole[0];
-			isMoved = moveX(blue, direction);
+			moveX(blue, direction);
 			if(hole[1] == blue[1] && holeToBall * (blue[0] - hole[0]) <= 0){
 				return false;
 			}
+			boolean isMoved = holeToBall != blue[0] - hole[0];
 
-			red[0] += dx[direction];
-			isMoved |= arr[red[1]][red[0]];
-			while(arr[red[1]][red[0]]){
-				if(red[0] == hole[0] && red[1] == hole[1]){
-					isPassedHole = true;
-					return true;
-				}
-				// red 위치 업데이트.
-				red[0] += dx[direction];
+			holeToBall = red[0] - hole[0];
+			moveX(red, direction);
+			if(hole[1] == red[1] && holeToBall * (red[0] - hole[0]) <= 0){
+				isPassedHole = true;
+				return true;
 			}
-			red[0] -= dx[direction];
 			if(blue[0] == red[0] && blue[1] == red[1]){
 				if(isRedBig){
 					blue[0] -= dx[direction];
@@ -78,26 +73,24 @@ public class Main{
 					red[0] -= dx[direction];
 				}
 			}
+			return isMoved || holeToBall != red[0] - hole[0];
 		}else{
 			boolean isRedBig = (blue[1] < red[1] && direction == 1) || (blue[1] > red[1] && direction == 3);
 			int holeToBall = blue[1] - hole[1];
-			isMoved = moveY(blue, direction);
+			moveY(blue, direction);
 
 			if(hole[0] == blue[0] && holeToBall * (blue[1] - hole[1]) <= 0){
 				return false;
 			}
+			boolean isMoved = holeToBall != blue[1] - hole[1];
 
-			red[1] += dy[direction];
-			isMoved |= arr[red[1]][red[0]];
-			while(arr[red[1]][red[0]]){
-				if(red[0] == hole[0] && red[1] == hole[1]){
-					isPassedHole = true;
-					return true;
-				}
-				// red 위치 업데이트.
-				red[1] += dy[direction];
+			holeToBall = red[1] - hole[1];
+			moveY(red, direction);
+			if(hole[0] == red[0] && holeToBall * (red[1] - hole[1]) <= 0){
+				isPassedHole = true;
+				return true;
 			}
-			red[1] -= dy[direction];
+
 			if(blue[0] == red[0] && blue[1] == red[1]){
 				if(isRedBig){
 					blue[1] -= dy[direction];
@@ -105,31 +98,26 @@ public class Main{
 					red[1] -= dy[direction];
 				}
 			}
+			return isMoved || holeToBall != red[1] - hole[1];
 		}
-
-		return isMoved;
 	}
 
-	private static boolean moveX(int[] ball, int direction){
+	private static void moveX(int[] ball, int direction){
 		ball[0] += dx[direction];
-		boolean isMoved = arr[ball[1]][ball[0]];
 		while(arr[ball[1]][ball[0]]){
 			// ball 위치 업데이트.
 			ball[0] += dx[direction];
 		}
 		ball[0] -= dx[direction];
-		return isMoved;
 	}
 
-	private static boolean moveY(int[] ball, int direction){
+	private static void moveY(int[] ball, int direction){
 		ball[1] += dy[direction];
-		boolean isMoved = arr[ball[1]][ball[0]];
 		while(arr[ball[1]][ball[0]]){
 			// ball 위치 업데이트.
 			ball[1] += dy[direction];
 		}
 		ball[1] -= dy[direction];
-		return isMoved;
 	}
 
 	private static void init(BufferedReader br) throws IOException {
