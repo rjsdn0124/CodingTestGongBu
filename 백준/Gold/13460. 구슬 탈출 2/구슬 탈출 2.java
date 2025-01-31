@@ -6,8 +6,8 @@ public class Main{
 	private static boolean isPassedHole = false;
 	private static int[] blue, red, hole;
 	private static boolean[][] arr;
-	private static int[] dx = new int[]{1, -1, 0, 0};
-	private static int[] dy = new int[]{0, 0, 1, -1};
+	private static int[] dx = new int[]{1, 0, -1, 0};
+	private static int[] dy = new int[]{0, 1, 0, -1};
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -37,7 +37,7 @@ public class Main{
 				red[0] = temp[2];
 				red[1] = temp[3];
 				// 기울였는데 둘 다 위치 안 바뀌면 패스.
-				if(i != temp[4] && move(i)){
+				if(i % 2 != temp[4] % 2 && move(i)){
 					// 빨강이 빠지면 같은 타이밍에 파랑 빠지는지 체크.
 					if(isPassedHole){
 						result = temp[5];
@@ -52,8 +52,8 @@ public class Main{
 	private static boolean move(int direction){
 		boolean isMoved = false;
 		// x축 y축 둘 중 하나가 같은 위치일 때 먼저 도착하는 애 있으면 그만하기
-		if(direction < 2){
-			boolean isRedBig = (blue[0] < red[0] && direction % 2 == 0) || (blue[0] > red[0] && direction % 2 == 1);
+		if(direction % 2 == 0){
+			boolean isRedBig = (blue[0] < red[0] && direction == 0) || (blue[0] > red[0] && direction == 2);
 			blue[0] += dx[direction];
 			isMoved = arr[blue[1]][blue[0]];
 			while(arr[blue[1]][blue[0]]){
@@ -84,7 +84,7 @@ public class Main{
 				}
 			}
 		}else{
-			boolean isRedBig = (blue[1] < red[1] && direction % 2 == 0) || (blue[1] > red[1] && direction % 2 == 1);
+			boolean isRedBig = (blue[1] < red[1] && direction == 1) || (blue[1] > red[1] && direction == 3);
 			blue[1] += dy[direction];
 			isMoved = arr[blue[1]][blue[0]];
 			while(arr[blue[1]][blue[0]]){
