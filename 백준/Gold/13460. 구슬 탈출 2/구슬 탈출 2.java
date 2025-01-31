@@ -54,16 +54,17 @@ public class Main{
 		// x축 y축 둘 중 하나가 같은 위치일 때 먼저 도착하는 애 있으면 그만하기
 		if(direction % 2 == 0){
 			boolean isRedBig = (blue[0] < red[0] && direction == 0) || (blue[0] > red[0] && direction == 2);
+			int holeToBall = blue[0] - hole[0];
 			blue[0] += dx[direction];
 			isMoved = arr[blue[1]][blue[0]];
 			while(arr[blue[1]][blue[0]]){
-				if(blue[0] == hole[0] && blue[1] == hole[1]){
-					return false;
-				}
 				// blue 위치 업데이트.
 				blue[0] += dx[direction];
 			}
 			blue[0] -= dx[direction];
+			if(hole[1] == blue[1] && holeToBall * (blue[0] - hole[0]) <= 0){
+				return false;
+			}
 
 			red[0] += dx[direction];
 			isMoved |= arr[red[1]][red[0]];
@@ -85,16 +86,17 @@ public class Main{
 			}
 		}else{
 			boolean isRedBig = (blue[1] < red[1] && direction == 1) || (blue[1] > red[1] && direction == 3);
+			int holeToBall = blue[1] - hole[1];
 			blue[1] += dy[direction];
 			isMoved = arr[blue[1]][blue[0]];
 			while(arr[blue[1]][blue[0]]){
-				if(blue[0] == hole[0] && blue[1] == hole[1]){
-					return false;
-				}
 				// blue 위치 업데이트.
 				blue[1] += dy[direction];
 			}
 			blue[1] -= dy[direction];
+			if(hole[0] == blue[0] && holeToBall * (blue[1] - hole[1]) <= 0){
+				return false;
+			}
 
 			red[1] += dy[direction];
 			isMoved |= arr[red[1]][red[0]];
