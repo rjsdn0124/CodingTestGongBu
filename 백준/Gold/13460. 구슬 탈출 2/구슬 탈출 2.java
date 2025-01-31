@@ -55,13 +55,7 @@ public class Main{
 		if(direction % 2 == 0){
 			boolean isRedBig = (blue[0] < red[0] && direction == 0) || (blue[0] > red[0] && direction == 2);
 			int holeToBall = blue[0] - hole[0];
-			blue[0] += dx[direction];
-			isMoved = arr[blue[1]][blue[0]];
-			while(arr[blue[1]][blue[0]]){
-				// blue 위치 업데이트.
-				blue[0] += dx[direction];
-			}
-			blue[0] -= dx[direction];
+			isMoved = moveX(blue, direction);
 			if(hole[1] == blue[1] && holeToBall * (blue[0] - hole[0]) <= 0){
 				return false;
 			}
@@ -87,13 +81,8 @@ public class Main{
 		}else{
 			boolean isRedBig = (blue[1] < red[1] && direction == 1) || (blue[1] > red[1] && direction == 3);
 			int holeToBall = blue[1] - hole[1];
-			blue[1] += dy[direction];
-			isMoved = arr[blue[1]][blue[0]];
-			while(arr[blue[1]][blue[0]]){
-				// blue 위치 업데이트.
-				blue[1] += dy[direction];
-			}
-			blue[1] -= dy[direction];
+			isMoved = moveY(blue, direction);
+
 			if(hole[0] == blue[0] && holeToBall * (blue[1] - hole[1]) <= 0){
 				return false;
 			}
@@ -118,6 +107,28 @@ public class Main{
 			}
 		}
 
+		return isMoved;
+	}
+
+	private static boolean moveX(int[] ball, int direction){
+		ball[0] += dx[direction];
+		boolean isMoved = arr[ball[1]][ball[0]];
+		while(arr[ball[1]][ball[0]]){
+			// ball 위치 업데이트.
+			ball[0] += dx[direction];
+		}
+		ball[0] -= dx[direction];
+		return isMoved;
+	}
+
+	private static boolean moveY(int[] ball, int direction){
+		ball[1] += dy[direction];
+		boolean isMoved = arr[ball[1]][ball[0]];
+		while(arr[ball[1]][ball[0]]){
+			// ball 위치 업데이트.
+			ball[1] += dy[direction];
+		}
+		ball[1] -= dy[direction];
 		return isMoved;
 	}
 
