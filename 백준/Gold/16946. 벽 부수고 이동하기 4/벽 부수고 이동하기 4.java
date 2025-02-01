@@ -72,7 +72,7 @@ public class Main{
 			visited[xy[1]][xy[0]] = false;
 		}
 	}
-
+	
 	private static void init(BufferedReader br) throws IOException {
 		String[] line = br.readLine().split(" ");
 		N = Integer.parseInt(line[0]);
