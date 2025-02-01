@@ -2,11 +2,11 @@ import java.io.*;
 import java.util.*;
 
 public class Main{
-	private static int N, M;
+	private static int N, M, areaCount;
 	private static StringBuilder sb = new StringBuilder();
-	private static boolean[][] arr;
+	private static int[][] arr;
 	private static boolean[][] visited;
-	private static int[][][] areaCounts;
+	private static Queue<Integer> walls = new LinkedList<>();
 	private static int[] dx = new int[]{1, 0, -1, 0};
 	private static int[] dy = new int[]{0, 1, 0, -1};
 
@@ -22,61 +22,57 @@ public class Main{
 		// 0을 찾아서 0 영역 갯수 세고 각 좌표별 갯수 저장.
 		for(int i = 0; i < N; i++){
 			for(int j = 0; j < M; j++){
-				if(!visited[i][j] && arr[i][j]){
-					dfs(j, i, new int[]{0});
+				if(!visited[i][j] && arr[i][j] == 0){
+					areaCount = 0;
+					dfs(j, i);
+					// 1 자리에 결과 업데이트
+					getAroundAreaCounts();
 				}
 			}
 		}
-		// 1을 찾아서 상하좌우 갯수 더하기.
+		// 출력
 		for(int i = 0; i < N; i++){
 			for(int j = 0; j < M; j++){
-				if(arr[i][j]){
-					sb.append(0);
-				}else{
-					sb.append(getAroundAreaCounts(j, i));
-				}
+				sb.append(arr[i][j] % 10);
 			}
 			sb.append("\n");
 		}
 	}
 
-	private static void dfs(int x, int y, int[] areaCount){
-		areaCount[0]++;
+	private static void dfs(int x, int y){
+		areaCount++;
 		visited[y][x] = true;
-		areaCounts[y][x] = areaCount;
 
 		for(int i = 0; i < 4; i++){
 			int nx = x + dx[i];
 			int ny = y + dy[i];
-			if(isInBound(nx, ny) && !visited[ny][nx] && arr[ny][nx]){
-				dfs(nx, ny, areaCount);
+			if(isInBound(nx, ny) && !visited[ny][nx]){
+				if(arr[ny][nx] == 0){
+					dfs(nx, ny);
+				}else{
+					walls.add(createMyXY(nx, ny));
+					visited[ny][nx] = true;
+				}
 			}
 		}
 	}
 
-	private static int getAroundAreaCounts(int x, int y){
-		int result = 1;
-		List<int[]> list = new LinkedList<>();
-		for(int i = 0; i < 4; i++){
-			int nx = x + dx[i];
-			int ny = y + dy[i];
-			if(isInBound(nx, ny) && arr[ny][nx]){
-				result += areaCounts[ny][nx][0];
-
-				for(int[] e: list){
-					if(e == areaCounts[ny][nx]){
-						result -= areaCounts[ny][nx][0];
-						break;
-					}
-				}
-				list.add(areaCounts[ny][nx]);
-			}
+	private static void getAroundAreaCounts(){
+		while(!walls.isEmpty()) {
+			int xy = walls.poll();
+			int x = xy / 1000;
+			int y = xy % 1000;
+			arr[y][x] += areaCount;
+			visited[y][x] = false;
 		}
-		return result % 10;
 	}
 
 	private static boolean isInBound(int x, int y){
 		return 0 <= x && x < M && 0 <= y && y < N;
+	}
+
+	private static int createMyXY(int x, int y){
+		return x * 1000 + y;
 	}
 
 	private static void init(BufferedReader br) throws IOException {
@@ -84,14 +80,13 @@ public class Main{
 		N = Integer.parseInt(line[0]);
 		M = Integer.parseInt(line[1]);
 
-		arr = new boolean[N][M];
+		arr = new int[N][M];
 		visited = new boolean[N][M];
-		areaCounts = new int[N][M][];
 
 		for(int i = 0; i < N; i++) {
 			String l = br.readLine();
 			for(int j = 0; j < M; j++) {
-				arr[i][j] = l.charAt(j) == '0';
+				arr[i][j] = l.charAt(j) - '0';
 			}
 		}
 	}
