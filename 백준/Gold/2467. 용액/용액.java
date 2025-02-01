@@ -17,10 +17,11 @@ public class Main{
 		// 투포인터
 		int l = 0;
 		int r = N - 1;
-		int result = Math.abs(arr[r] + arr[l]);
+		int result = Integer.MAX_VALUE;
 
 		while(l < r){
 			int temp = arr[r] + arr[l];
+
 			if(result >= Math.abs(temp)){
 				minL = arr[l];
 				minR = arr[r];
