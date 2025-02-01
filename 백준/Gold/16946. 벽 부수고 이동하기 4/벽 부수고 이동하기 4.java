@@ -6,7 +6,7 @@ public class Main{
 	private static StringBuilder sb = new StringBuilder();
 	private static int[][] arr;
 	private static boolean[][] visited;
-	private static Queue<Integer> walls = new LinkedList<>();
+	private static Queue<int[]> walls = new LinkedList<>();
 	private static int[] dx = new int[]{1, 0, -1, 0};
 	private static int[] dy = new int[]{0, 1, 0, -1};
 
@@ -50,7 +50,7 @@ public class Main{
 				if(arr[ny][nx] == 0){
 					dfs(nx, ny);
 				}else{
-					walls.add(createMyXY(nx, ny));
+					walls.add(new int[]{nx, ny});
 					visited[ny][nx] = true;
 				}
 			}
@@ -59,11 +59,9 @@ public class Main{
 
 	private static void getAroundAreaCounts(){
 		while(!walls.isEmpty()) {
-			int xy = walls.poll();
-			int x = xy / 1000;
-			int y = xy % 1000;
-			arr[y][x] += areaCount;
-			visited[y][x] = false;
+			int[] xy = walls.poll();
+			arr[xy[1]][xy[0]] += areaCount;
+			visited[xy[1]][xy[0]] = false;
 		}
 	}
 
@@ -71,9 +69,9 @@ public class Main{
 		return 0 <= x && x < M && 0 <= y && y < N;
 	}
 
-	private static int createMyXY(int x, int y){
-		return x * 1000 + y;
-	}
+	// private static int createMyXY(int x, int y){
+	// 	return x * 1000 + y;
+	// }
 
 	private static void init(BufferedReader br) throws IOException {
 		String[] line = br.readLine().split(" ");
