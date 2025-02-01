@@ -6,6 +6,7 @@ public class Main{
 	private static StringBuilder sb = new StringBuilder();
 	private static int[][] arr;
 	private static boolean[][] visited;
+	private static Queue<int[]> q = new LinkedList<>();
 	private static Queue<int[]> walls = new LinkedList<>();
 	private static int[] dx = new int[]{1, 0, -1, 0};
 	private static int[] dy = new int[]{0, 1, 0, -1};
@@ -25,7 +26,9 @@ public class Main{
 				if(!visited[i][j] && arr[i][j] == 0){
 					// 영역 갯수
 					areaCount = 0;
-					dfs(j, i);
+					q.add(new int[]{j, i});
+					visited[i][j] = true;
+					bfs();
 					// 1 자리에 결과 업데이트
 					getAroundAreaCounts();
 				}
@@ -40,22 +43,26 @@ public class Main{
 		}
 	}
 
-	private static void dfs(int x, int y){
-		areaCount++;
-		visited[y][x] = true;
+	private static void bfs(){
+		while(!q.isEmpty()){
+			int[] xy = q.poll();
+			areaCount++;
 
-		for(int i = 0; i < 4; i++){
-			int nx = x + dx[i];
-			int ny = y + dy[i];
-			if(0 <= nx && nx < M && 0 <= ny && ny < N && !visited[ny][nx]){
-				if(arr[ny][nx] == 0){
-					dfs(nx, ny);
-				}else{
-					walls.add(new int[]{nx, ny});
-					visited[ny][nx] = true;
+			for(int i = 0; i < 4; i++){
+				int nx = xy[0] + dx[i];
+				int ny = xy[1] + dy[i];
+				if(0 <= nx && nx < M && 0 <= ny && ny < N && !visited[ny][nx]){
+					if(arr[ny][nx] == 0){
+						q.add(new int[]{nx, ny});
+						visited[ny][nx] = true;
+					}else{
+						walls.add(new int[]{nx, ny});
+						visited[ny][nx] = true;
+					}
 				}
 			}
 		}
+
 	}
 
 	private static void getAroundAreaCounts(){
