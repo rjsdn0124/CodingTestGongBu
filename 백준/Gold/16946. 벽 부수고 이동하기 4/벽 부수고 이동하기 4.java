@@ -23,6 +23,7 @@ public class Main{
 		for(int i = 0; i < N; i++){
 			for(int j = 0; j < M; j++){
 				if(!visited[i][j] && arr[i][j] == 0){
+					// 영역 갯수
 					areaCount = 0;
 					dfs(j, i);
 					// 1 자리에 결과 업데이트
@@ -46,7 +47,7 @@ public class Main{
 		for(int i = 0; i < 4; i++){
 			int nx = x + dx[i];
 			int ny = y + dy[i];
-			if(isInBound(nx, ny) && !visited[ny][nx]){
+			if(0 <= nx && nx < M && 0 <= ny && ny < N && !visited[ny][nx]){
 				if(arr[ny][nx] == 0){
 					dfs(nx, ny);
 				}else{
@@ -64,14 +65,6 @@ public class Main{
 			visited[xy[1]][xy[0]] = false;
 		}
 	}
-
-	private static boolean isInBound(int x, int y){
-		return 0 <= x && x < M && 0 <= y && y < N;
-	}
-
-	// private static int createMyXY(int x, int y){
-	// 	return x * 1000 + y;
-	// }
 
 	private static void init(BufferedReader br) throws IOException {
 		String[] line = br.readLine().split(" ");
