@@ -39,9 +39,8 @@ public class Main{
 	}
 
 	private static void init(BufferedReader br) throws IOException {
-		String[] line = br.readLine().split(" ");
-		N = Integer.parseInt(line[0]);
-		M = Integer.parseInt(line[1]);
+		N = read();
+		M = read();
 
 		arr = new Problem[N + 1];
 
@@ -50,12 +49,18 @@ public class Main{
 		}
 
 		for(int i = 0; i < M; i++) {
-			String[] l = br.readLine().split(" ");
-			int parent = Integer.parseInt(l[0]);
-			int child = Integer.parseInt(l[1]);
+			int parent = read();
+			int child = read();
 			arr[parent].childProblems.add(child);
 			arr[child].parentCount++;
 		}
+	}
+	public static int read() throws IOException {
+		int c, n = System.in.read() & 15;
+		while ((c = System.in.read()) > 32) {
+			n = (n << 3) + (n << 1) + (c & 15);
+		}
+		return n;
 	}
 }
 
