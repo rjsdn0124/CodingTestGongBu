@@ -7,9 +7,7 @@ public class Main{
 	private static Problem[] arr;
 
 	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		init(br);
+		init();
 		solution();
 		System.out.print(sb);
 	}
@@ -38,7 +36,7 @@ public class Main{
 		}
 	}
 
-	private static void init(BufferedReader br) throws IOException {
+	private static void init() throws IOException {
 		N = read();
 		M = read();
 
