@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Main{
 	private static int N;
+	private static final String SPACE = " ";
 	private static StringBuilder sb = new StringBuilder();
 	private static List<Integer>[] arr;
 	private static int[] parentCount;
@@ -27,7 +28,7 @@ public class Main{
 
 		while(!pq.isEmpty()){
 			int p = pq.poll();
-			sb.append(p).append(" ");
+			sb.append(p).append(SPACE);
 
 			for(int c : arr[p]){
 				if(--parentCount[c] == 0){
@@ -38,7 +39,7 @@ public class Main{
 	}
 
 	private static void init(BufferedReader br) throws IOException {
-		String[] line = br.readLine().split(" ");
+		String[] line = br.readLine().split(SPACE);
 		N = Integer.parseInt(line[0]);
 		int m = Integer.parseInt(line[1]);
 
@@ -50,7 +51,7 @@ public class Main{
 		}
 
 		for(int i = 0; i < m; i++) {
-			String[] l = br.readLine().split(" ");
+			String[] l = br.readLine().split(SPACE);
 			int parent = Integer.parseInt(l[0]);
 			int child = Integer.parseInt(l[1]);
 			arr[parent].add(child);
