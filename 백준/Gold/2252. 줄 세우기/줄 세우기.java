@@ -20,7 +20,7 @@ public class Main{
 	private static void solution(){
 		Queue<Integer> pq = new PriorityQueue<>();
 
-		for(int i = 1; i <= N; i++){
+		for(int i = 0; i < N; i++){
 			if(parentCount[i] == 0) {
 				pq.add(i);
 			}
@@ -28,7 +28,7 @@ public class Main{
 
 		while(!pq.isEmpty()){
 			int p = pq.poll();
-			sb.append(p).append(SPACE);
+			sb.append(p + 1).append(SPACE);
 
 			for(int c : arr[p]){
 				if(--parentCount[c] == 0){
@@ -43,17 +43,17 @@ public class Main{
 		N = Integer.parseInt(line[0]);
 		int m = Integer.parseInt(line[1]);
 
-		arr = new ArrayList[N + 1];
-		parentCount = new int[N + 1];
+		arr = new ArrayList[N];
+		parentCount = new int[N];
 
-		for(int i = 1; i <= N; i++) {
+		for(int i = 0; i < N; i++) {
 			arr[i] = new ArrayList<>();
 		}
 
 		for(int i = 0; i < m; i++) {
 			String[] l = br.readLine().split(SPACE);
-			int parent = Integer.parseInt(l[0]);
-			int child = Integer.parseInt(l[1]);
+			int parent = Integer.parseInt(l[0]) - 1;
+			int child = Integer.parseInt(l[1]) - 1;
 			arr[parent].add(child);
 			parentCount[child]++;
 		}
