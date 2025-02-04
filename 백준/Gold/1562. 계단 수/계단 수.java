@@ -2,8 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main{
-	private static int N, maxBit = 1024;
-	private static long result = 0L;
+	private static int N, maxBit = 1024, result = 0;
 	private static int[][][] dp;
 
 	public static void main(String[] args) throws IOException{
@@ -11,7 +10,7 @@ public class Main{
 
 		init(br);
 		solution();
-		System.out.print(result % 1000000000);
+		System.out.print(result);
 	}
 
 	private static void solution(){
@@ -26,6 +25,7 @@ public class Main{
 
 		for(int i = 1; i < 10; i++){
 			result += dp[N - 1][i][maxBit - 1];
+			result %= 1000000000;
 		}
 	}
 
