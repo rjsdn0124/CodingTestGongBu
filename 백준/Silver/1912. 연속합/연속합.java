@@ -17,11 +17,7 @@ public class Main{
 	private static void solution(){
 		int prevSum = 0;
 		for(int i = 0; i < N; i++){
-			if(prevSum < 0){
-				prevSum = arr[i];
-			}else{
-				prevSum += arr[i];
-			}
+			prevSum = Math.max(arr[i], prevSum+arr[i]);
 			result = Math.max(prevSum, result);
 		}
 	}
