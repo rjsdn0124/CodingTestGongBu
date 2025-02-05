@@ -4,7 +4,7 @@ import java.util.*;
 public class Main{
 	private static int N, h, w;
 	private static final String SPACE = " ";
-	private static String[] arr;
+	private static char[][] arr;
 	private static boolean[] keys = new boolean['z' - 'a' + 1];
 	private static boolean[][] visited;
 	private static Queue<int[]> q;
@@ -34,7 +34,7 @@ public class Main{
 		int cycleCount = 0;
 		while(!q.isEmpty()){
 			int[] xy = q.poll();
-			char c = arr[xy[1]].charAt(xy[0]);
+			char c = arr[xy[1]][xy[0]];
 			if(c <= 'z' && c >= 'a'){
 				// 소문자 만난 경우
 				keys[c - 'a'] = true;
@@ -57,7 +57,7 @@ public class Main{
 				int nx = xy[0] + dx[i];
 				int ny = xy[1] + dy[i];
 
-				if(0 <= nx && nx < w && 0 <= ny && ny < h && !visited[ny][nx] && arr[ny].charAt(nx) != '*'){
+				if(0 <= nx && nx < w && 0 <= ny && ny < h && !visited[ny][nx] && arr[ny][nx] != '*'){
 					q.add(new int[] { nx, ny });
 					visited[ny][nx] = true;
 				}
@@ -78,7 +78,7 @@ public class Main{
 	}
 
 	private static void addInQ(int x, int y){
-		if(arr[y].charAt(x) != '*'){
+		if(arr[y][x] != '*'){
 			q.add(new int[]{x, y});
 			visited[y][x] = true;
 		}
@@ -88,10 +88,10 @@ public class Main{
 		String[] l = br.readLine().split(SPACE);
 		h = Integer.parseInt(l[0]);
 		w = Integer.parseInt(l[1]);
-		arr = new String[h];
+		arr = new char[h][];
 
 		for(int i = 0; i < h; i++){
-			arr[i] = br.readLine();
+			arr[i] = br.readLine().toCharArray();
 		}
 
 		Arrays.fill(keys, false);
