@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Main{
 	private static int N, M;
-	private static int[] arr, powTen, onlyOne;
+	private static int[] arr, powTen;
 	private static int[][] weights;
 	private static Queue<Node> q;
-	private static Map<Integer, Integer> visited;
+	private static Set<Integer> visited;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,20 +16,20 @@ public class Main{
 
 	private static int solution(){
 		q = new PriorityQueue<>();
-		visited = new HashMap<>();
+		visited = new HashSet<>();
 		Node tarr = new Node(arrToInt(), 0);
 		q.add(tarr);
 
 		while(!q.isEmpty()){
 			tarr = q.poll();
-			if(!visited.containsKey(tarr.arr)) {
+			if(!visited.contains(tarr.arr)) {
 				if(isIncreasing(tarr.arr)){
 					return tarr.weightSum;
 				}
-				visited.put(tarr.arr, tarr.weightSum);
+				visited.add(tarr.arr);
 				for (int[] weight : weights) {
 					int nArr = updateArr(tarr.arr, weight[0], weight[1]);
-					if (!visited.containsKey(nArr)) {
+					if (!visited.contains(nArr)) {
 						q.add(new Node(nArr, tarr.weightSum + weight[2]));
 					}
 				}
