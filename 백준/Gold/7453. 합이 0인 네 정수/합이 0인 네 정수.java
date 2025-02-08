@@ -5,7 +5,7 @@ public class Main{
 	private static int N;
 	private static long result = 0L;
 	private static int[][] arr;
-	private static long[][] sumArr;
+	private static int[][] sumArr;
 
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,8 +18,8 @@ public class Main{
 		int ind = 0;
 		for(int i = 0; i < N; i++){
 			for(int j = 0; j < N; j++){
-				sumArr[0][ind] = (long)arr[0][i] + arr[1][j];
-				sumArr[1][ind++] = (long)arr[2][i] + arr[3][j];
+				sumArr[0][ind] = arr[0][i] + arr[1][j];
+				sumArr[1][ind++] = arr[2][i] + arr[3][j];
 			}
 		}
 
@@ -45,13 +45,14 @@ public class Main{
 					lastInd--;
 				}
 			}
+
 		}
 	}
 
 	private static void init(BufferedReader br) throws IOException {
 		N = Integer.parseInt(br.readLine());
 		arr = new int[4][N];
-		sumArr = new long[2][N * N];
+		sumArr = new int[2][N * N];
 
 		for(int i = 0; i < N; i++){
 			String[] line = br.readLine().split(" ");
