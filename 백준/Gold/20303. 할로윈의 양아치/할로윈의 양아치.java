@@ -19,21 +19,13 @@ public class Main{
 		union();
 		dp = new int[K];
 		updateDP();
-		for(int i = 0; i < K; i++){
-			result = Math.max(result, dp[i]);
-		}
+		result = dp[K - 1];
 	}
 
 	private static void updateDP(){
 		for(int[] group: groups){
-			for(int i = K - 1; i >= 0; i--){
-				if(dp[i] > 0 && i + group[0] < K){
-
-					dp[i + group[0]] = Math.max(dp[i + group[0]], dp[i] + group[1]);
-				}
-			}
-			if(group[0] < K) {
-				dp[group[0]] = Math.max(dp[group[0]], group[1]);
+			for(int i = K - 1; i >= group[0]; i--){
+				dp[i] = Math.max(dp[i], dp[i - group[0]] + group[1]);
 			}
 		}
 	}
