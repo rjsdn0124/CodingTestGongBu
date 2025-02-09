@@ -12,21 +12,16 @@ public class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		init(br);
 		solution();
-		System.out.println(result);
+		System.out.println(dp[K - 1]);
 	}
 
 	private static void solution(){
 		union();
-		dp = new int[K];
-		updateDP();
-		result = dp[K - 1];
 	}
 
-	private static void updateDP(){
-		for(int[] group: groups){
-			for(int i = K - 1; i >= group[0]; i--){
-				dp[i] = Math.max(dp[i], dp[i - group[0]] + group[1]);
-			}
+	private static void updateDP(int[] group){
+		for(int i = K - 1; i >= group[0]; i--){
+			dp[i] = Math.max(dp[i], dp[i - group[0]] + group[1]);
 		}
 	}
 
@@ -37,7 +32,7 @@ public class Main{
 			if(!visited[i]){
 				int[] group = new int[2];
 				dfs(i, group, visited);
-				groups.add(group);
+				updateDP(group);
 			}
 		}
 	}
@@ -61,6 +56,7 @@ public class Main{
 		K = Integer.parseInt(line[2]);
 		arr = new int[N];
 		friends = new ArrayList[N];
+		dp = new int[K];
 
 		line = br.readLine().split(" ");
 		for(int i = 0; i < N; i++){
