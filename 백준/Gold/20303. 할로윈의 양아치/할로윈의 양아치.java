@@ -1,0 +1,88 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+	private static int N, M, K, result = 0;
+	private static int[] arr;
+	private static int[] dp;
+	private static List<int[]> groups;
+	private static List<Integer>[] friends;
+
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		init(br);
+		solution();
+		System.out.println(result);
+	}
+
+	private static void solution(){
+		union();
+		dp = new int[K];
+		updateDP();
+		for(int i = 0; i < K; i++){
+			result = Math.max(result, dp[i]);
+		}
+	}
+
+	private static void updateDP(){
+		for(int[] group: groups){
+			for(int i = K - 1; i >= 0; i--){
+				if(dp[i] > 0 && i + group[0] < K){
+
+					dp[i + group[0]] = Math.max(dp[i + group[0]], dp[i] + group[1]);
+				}
+			}
+			if(group[0] < K) {
+				dp[group[0]] = Math.max(dp[group[0]], group[1]);
+			}
+		}
+	}
+
+	private static void union(){
+		boolean[] visited = new boolean[N];
+		groups = new ArrayList<>();
+		for(int i = 0; i < N; i++){
+			if(!visited[i]){
+				int[] group = new int[2];
+				dfs(i, group, visited);
+				groups.add(group);
+			}
+		}
+	}
+
+	private static void dfs(int ind, int[] group, boolean[] visited){
+		visited[ind] = true;
+		group[0]++;
+		group[1] += arr[ind];
+
+		for(int f: friends[ind]){
+			if(!visited[f]) {
+				dfs(f, group, visited);
+			}
+		}
+	}
+
+	private static void init(BufferedReader br) throws IOException {
+		String[] line = br.readLine().split(" ");
+		N = Integer.parseInt(line[0]);
+		M = Integer.parseInt(line[1]);
+		K = Integer.parseInt(line[2]);
+		arr = new int[N];
+		friends = new ArrayList[N];
+
+		line = br.readLine().split(" ");
+		for(int i = 0; i < N; i++){
+			arr[i] = Integer.parseInt(line[i]);
+			friends[i] = new ArrayList<>();
+		}
+
+		for(int i = 0; i < M; i++){
+			String[] l = br.readLine().split(" ");
+			int n1 = Integer.parseInt(l[0]) - 1;
+			int n2 = Integer.parseInt(l[1]) - 1;
+
+			friends[n1].add(n2);
+			friends[n2].add(n1);
+		}
+	}
+}
