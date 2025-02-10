@@ -23,10 +23,11 @@ public class Main{
 	}
 
 	private static void search(int parentInd, int start, int end){
-		int left = inOrderInds[postOrder[parentInd]] - start;
-		int right = end - inOrderInds[postOrder[parentInd]];
+		int parent = postOrder[parentInd];
+		int left = inOrderInds[parent] - start;
+		int right = end - inOrderInds[parent];
 
-		sb.append(postOrder[parentInd]).append(" ");
+		sb.append(parent).append(" ");
 		if(left > 0) {
 			search(parentInd - right - 1, start, start + left - 1);
 		}
