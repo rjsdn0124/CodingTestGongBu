@@ -15,23 +15,22 @@ public class Main{
 
 	private static void solution(){
 		// 인덱스 올라가면서 다음에 작아질 때 하나씩 빼주기
-		Stack<Character> st = new Stack<>();
+		Deque<Character> st = new ArrayDeque<>();
 		for(int i = 0; i < N; i++){
-			while(K > 0 && !st.isEmpty() && st.peek() < arr[i]){
-				st.pop();
+			while(K > 0 && !st.isEmpty() && st.getLast() < arr[i]){
+				st.removeLast();
 				K--;
 			}
-			st.push(arr[i]);
+			st.offer(arr[i]);
 		}
 
 		while(!st.isEmpty()){
 			if(K-- > 0){
-				st.pop();
+				st.removeLast();
 			}else {
-				sb.append(st.pop());
+				sb.append(st.removeFirst());
 			}
 		}
-		sb.reverse();
 	}
 
 	private static void init(BufferedReader br) throws IOException {
